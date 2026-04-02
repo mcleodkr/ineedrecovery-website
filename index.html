@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ineedrecovery.org — You Are Not Alone in This.</title>
+<meta name="description" content="A directory of recovery coaches, LCDCs, and peer specialists who understand where you have been. Find your path forward. No judgment. No algorithms. Just real people who understand.">
+<meta property="og:title" content="ineedrecovery.org — You Are Not Alone in This.">
+<meta property="og:description" content="A recovery marketplace where people find coaches, LCDCs, and peer specialists who understand. No judgment. No algorithms.">
+<meta property="og:url" content="https://www.ineedrecovery.org">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ineedrecovery.org — You Are Not Alone in This.">
+<meta name="twitter:description" content="Find recovery coaches and peer specialists who understand where you have been.">
+<link rel="canonical" href="https://www.ineedrecovery.org/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://www.ineedrecovery.org/#website",
+  "url": "https://www.ineedrecovery.org",
+  "name": "ineedrecovery.org",
+  "description": "A directory of recovery coaches, LCDCs, and peer specialists who understand where you have been. No judgment. No algorithms.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "ineedrecovery.org",
+    "url": "https://www.ineedrecovery.org"
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
+  --warm: #faf8f4; --white: #ffffff; --muted: #8a8a9a; --border: #2e2a3e;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--deep); color: var(--warm); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; }
+
+.container { max-width: 680px; width: 100%; text-align: center; }
+
+.eyebrow { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple); margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.eyebrow-dot { width: 7px; height: 7px; background: var(--purple); border-radius: 50%; }
+
+h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.08; letter-spacing: -0.02em; color: var(--warm); margin-bottom: 24px; }
+h1 em { color: var(--purple); font-style: italic; }
+
+.subtext { font-size: 1rem; line-height: 1.75; color: var(--muted); max-width: 540px; margin: 0 auto 48px; }
+
+.signup-form { display: flex; gap: 10px; max-width: 520px; margin: 0 auto 20px; flex-wrap: wrap; }
+.signup-form input[type="email"] { flex: 1; min-width: 200px; padding: 14px 18px; border: 1.5px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--warm); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
+.signup-form input[type="email"]:focus { border-color: var(--purple); }
+.signup-form input[type="email"]::placeholder { color: var(--muted); }
+.signup-form select { padding: 14px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--warm); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; outline: none; cursor: pointer; }
+.signup-form select option { background: var(--deep); color: var(--warm); }
+.signup-form button { padding: 14px 28px; background: var(--purple); color: var(--white); border: none; border-radius: 8px; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.signup-form button:hover { background: #8c5aae; }
+
+.signup-msg { font-size: 0.82rem; color: var(--purple); margin-bottom: 48px; min-height: 20px; }
+
+.values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
+.value-card { padding: 28px 20px; border: 1.5px solid var(--border); border-radius: 12px; }
+.value-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--purple); margin-bottom: 8px; }
+.value-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+.footer-note { font-size: 0.72rem; color: var(--muted); }
+.footer-note a { color: var(--purple); text-decoration: none; }
+
+@media (max-width: 600px) {
+  .values { grid-template-columns: 1fr; }
+  .signup-form { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Recovery Marketplace</div>
+  <h1>You are not alone in this.<br><em>Find your path forward.</em></h1>
+  <p class="subtext">A directory of recovery coaches, LCDCs, and peer specialists who understand where you have been. And a space for providers to find the people they are meant to help.</p>
+
+  <form class="signup-form" id="signupForm" onsubmit="return false;">
+    <input type="email" id="signup-email" placeholder="Your email" required>
+    <select id="signup-role">
+      <option value="provider">I am a Recovery Provider</option>
+      <option value="explorer">Someone looking for support</option>
+    </select>
+    <button type="button" onclick="submitSignup()">Get early access</button>
+  </form>
+  <div class="signup-msg" id="signupMsg"></div>
+
+  <div class="values">
+    <div class="value-card">
+      <h3>No judgment.</h3>
+      <p>Where you have been does not define where you are going.</p>
+    </div>
+    <div class="value-card">
+      <h3>No algorithms.</h3>
+      <p>No ranking. No pay-to-play. Every provider gets seen.</p>
+    </div>
+    <div class="value-card">
+      <h3>Just real people.</h3>
+      <p>Who understand. That is what makes this different.</p>
+    </div>
+  </div>
+
+  <p class="footer-note">A project from <a href="https://www.ineedtherapy.org">ineedtherapy.org</a></p>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
+
+async function submitSignup() {
+  var email = document.getElementById('signup-email').value.trim();
+  var role = document.getElementById('signup-role').value;
+  var msg = document.getElementById('signupMsg');
+  if (!email) { msg.textContent = 'Please enter your email.'; return; }
+
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/explorer_profiles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': ANON_KEY,
+        'Authorization': 'Bearer ' + ANON_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        email: email,
+        role: role,
+        audience: 'recovery',
+        source: 'ineedrecovery.org'
+      })
+    });
+    if (res.ok || res.status === 409) {
+      msg.textContent = 'You are on the list. We will reach out when we launch.';
+      document.getElementById('signup-email').value = '';
+    } else {
+      msg.textContent = 'Something went wrong. Please try again.';
+    }
+  } catch(e) {
+    msg.textContent = 'Network error. Please try again.';
+  }
+}
+</script>
+</body>
+</html>
