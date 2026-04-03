@@ -221,7 +221,7 @@ async function loadQuizzes() {
   var wrap = document.getElementById('quizzes-wrap');
   try {
     var res = await fetch(
-      SUPABASE_URL + '/rest/v1/quizzes?is_published=eq.true&select=id,title,slug,description,category,questions&order=category.asc,created_at.desc',
+      SUPABASE_URL + '/rest/v1/quizzes?is_published=eq.true&select=id,title,slug,description,category,questions,articles!inner(audience)&articles.audience=eq.recovery&order=category.asc,created_at.desc',
       { headers: { apikey: ANON_KEY, Authorization: 'Bearer ' + ANON_KEY } }
     );
     var quizzes = await res.json();
