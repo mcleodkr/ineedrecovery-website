@@ -33,72 +33,127 @@
 :root {
   --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
   --warm: #faf8f4; --white: #ffffff; --muted: #8a8a9a; --border: #2e2a3e;
+  --r: 14px; --r-sm: 8px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--deep); color: var(--warm); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; }
+body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--deep); color: var(--warm); overflow-x: hidden; }
 
-.container { max-width: 680px; width: 100%; text-align: center; }
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 300; display: flex; align-items: center; justify-content: space-between; padding: 14px 52px; background: rgba(26,26,46,0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--warm); text-decoration: none; }
+.logo .logo-i { color: var(--purple); font-style: italic; }
+.logo .logo-recovery { color: var(--purple); font-style: italic; }
+.nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+.nav-links a { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--purple); }
+.nav-pill { background: var(--purple); color: var(--white) !important; padding: 8px 18px; border-radius: 50px; }
+.nav-pill:hover { background: #8c5aae !important; }
 
-.eyebrow { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple); margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.eyebrow-dot { width: 7px; height: 7px; background: var(--purple); border-radius: 50%; }
+/* HERO */
+.hero { min-height: 100vh; padding-top: 64px; display: flex; align-items: center; justify-content: center; text-align: center; }
+.hero-inner { max-width: 720px; padding: 80px 40px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); margin-bottom: 24px; }
+.eyebrow-dot { width: 7px; height: 7px; background: var(--purple); border-radius: 50%; animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.6); } }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 1.08; letter-spacing: -0.02em; color: var(--warm); margin-bottom: 24px; }
+.hero h1 em { color: var(--purple); font-style: italic; }
+.hero-sub { font-size: 1rem; line-height: 1.75; color: var(--muted); max-width: 540px; margin: 0 auto 48px; }
 
-h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.08; letter-spacing: -0.02em; color: var(--warm); margin-bottom: 24px; }
-h1 em { color: var(--purple); font-style: italic; }
-
-.subtext { font-size: 1rem; line-height: 1.75; color: var(--muted); max-width: 540px; margin: 0 auto 48px; }
-
-.signup-form { display: flex; gap: 10px; max-width: 520px; margin: 0 auto 20px; flex-wrap: wrap; }
-.signup-form input[type="email"] { flex: 1; min-width: 200px; padding: 14px 18px; border: 1.5px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--warm); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
-.signup-form input[type="email"]:focus { border-color: var(--purple); }
-.signup-form input[type="email"]::placeholder { color: var(--muted); }
-.signup-form select { padding: 14px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--warm); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; outline: none; cursor: pointer; }
-.signup-form select option { background: var(--deep); color: var(--warm); }
-.signup-form button { padding: 14px 28px; background: var(--purple); color: var(--white); border: none; border-radius: 8px; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-.signup-form button:hover { background: #8c5aae; }
-
-.signup-msg { font-size: 0.82rem; color: var(--purple); margin-bottom: 48px; min-height: 20px; }
-
-.values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
-.value-card { padding: 28px 20px; border: 1.5px solid var(--border); border-radius: 12px; }
+/* VALUES */
+.values-section { padding: 80px 52px; }
+.values-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.value-card { padding: 28px 24px; border: 1.5px solid var(--border); border-radius: var(--r); transition: border-color 0.2s; }
+.value-card:hover { border-color: var(--purple); }
 .value-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--purple); margin-bottom: 8px; }
 .value-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
 
-.footer-note { font-size: 0.72rem; color: var(--muted); }
-.footer-note a { color: var(--purple); text-decoration: none; }
+/* ARTICLES */
+.articles-section { padding: 80px 52px; }
+.articles-inner { max-width: 1100px; margin: 0 auto; }
+.section-eyebrow { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); margin-bottom: 24px; text-align: center; }
+.filter-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 36px; }
+.filter-pill { padding: 8px 18px; border-radius: 50px; border: 1.5px solid var(--border); background: transparent; color: var(--muted); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.filter-pill:hover { border-color: var(--purple); color: var(--warm); }
+.filter-pill.active { background: var(--purple); border-color: var(--purple); color: var(--white); }
+.articles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.article-card { display: block; padding: 24px; border: 1.5px solid var(--border); border-radius: var(--r); text-decoration: none; transition: all 0.25s; }
+.article-card:hover { border-color: var(--purple); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(124,74,158,0.12); }
+.article-card .card-cat { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); margin-bottom: 10px; }
+.article-card .card-title { font-size: 0.95rem; font-weight: 700; color: var(--warm); line-height: 1.4; margin-bottom: 8px; }
+.article-card .card-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.55; margin-bottom: 12px; }
+.article-card .card-link { font-size: 0.75rem; font-weight: 700; color: var(--purple); }
 
+/* COMMONS */
+.commons-section { padding: 60px 52px; text-align: center; }
+.commons-card { max-width: 700px; margin: 0 auto; padding: 48px 40px; border: 1.5px solid var(--border); border-radius: var(--r); background: rgba(124,74,158,0.06); }
+.commons-card h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--warm); margin-bottom: 14px; line-height: 1.3; }
+.commons-card h2 em { color: var(--purple); font-style: italic; }
+.commons-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+.btn-commons { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: var(--white); padding: 12px 28px; border-radius: 50px; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.btn-commons:hover { background: #8c5aae; transform: translateY(-2px); }
+
+/* SPRIXLE */
+.sprixle-section { padding: 60px 52px; text-align: center; }
+.sprixle-card { max-width: 700px; margin: 0 auto; padding: 40px; background: rgba(255,255,255,0.04); border: 1.5px solid var(--border); border-radius: var(--r); }
+.sprixle-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--warm); margin-bottom: 10px; }
+.sprixle-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
+.btn-sprixle { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); color: var(--warm); padding: 11px 24px; border-radius: 50px; border: 1.5px solid var(--border); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.btn-sprixle:hover { background: var(--purple); border-color: var(--purple); color: var(--white); }
+
+/* FOOTER */
+footer { background: rgba(26,26,46,0.6); border-top: 1px solid var(--border); padding: 40px 52px; text-align: center; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--warm); margin-bottom: 12px; }
+.footer-logo .logo-i { color: var(--purple); font-style: italic; }
+.footer-logo .logo-recovery { color: var(--purple); font-style: italic; }
+.footer-parent { font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; }
+.footer-parent a { color: var(--purple); text-decoration: none; }
+.footer-parent a:hover { text-decoration: underline; }
+.footer-crisis { font-size: 0.72rem; color: rgba(255,255,255,0.4); font-weight: 700; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 12px 20px; }
+  .nav-links { gap: 14px; }
+  .articles-grid { grid-template-columns: 1fr; }
+  .values-grid { grid-template-columns: 1fr; }
+  .hero-inner { padding: 60px 24px; }
+  .articles-section, .commons-section, .sprixle-section, .values-section { padding: 60px 24px; }
+  footer { padding: 32px 24px; }
+}
 @media (max-width: 600px) {
-  .values { grid-template-columns: 1fr; }
-  .signup-form { flex-direction: column; }
+  .nav-links a:not(.nav-pill) { display: none; }
+  .articles-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<nav style="position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:14px 52px;background:rgba(26,26,46,0.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);">
-  <a href="/" style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--warm);text-decoration:none;"><span style="color:var(--purple);font-style:italic;">i</span>need<span style="color:var(--purple);font-style:italic;">recovery</span>.org</a>
-  <div style="display:flex;align-items:center;gap:20px;">
-    <a href="https://www.ineedtherapy.org/find-a-match.html" style="font-size:0.78rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;">Find Your Person</a>
-    <a href="https://www.ineedtherapy.org/ineedtherapy-profile-form.html" style="font-size:0.78rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;background:var(--purple);color:white;padding:8px 18px;border-radius:50px;text-decoration:none;">List Your Practice</a>
-  </div>
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo"><span class="logo-i">i</span><span>need</span><span class="logo-recovery">recovery</span><span>.org</span></a>
+  <ul class="nav-links">
+    <li><a href="https://www.ineedtherapy.org/find-a-match.html">Find Your Person</a></li>
+    <li><a href="#articles">Articles</a></li>
+    <li><a href="/quizzes.html">Quizzes</a></li>
+    <li><a href="/dashboard.html">Dashboard</a></li>
+    <li><a href="/welcome.html" class="nav-pill" id="nav-login-btn">Login</a></li>
+    <li><a href="https://www.ineedtherapy.org/ineedtherapy-profile-form.html" class="nav-pill" style="background:transparent;border:1.5px solid var(--purple);color:var(--purple);">List Your Practice</a></li>
+  </ul>
 </nav>
 
-<div class="container" style="padding-top:80px;">
-  <div class="eyebrow"><span class="eyebrow-dot"></span>Recovery Marketplace</div>
-  <h1>You are not alone in this.<br><em>Find your path forward.</em></h1>
-  <p class="subtext">A directory of recovery coaches, LCDCs, and peer specialists who understand where you have been. And a space for providers to find the people they are meant to help.</p>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="eyebrow-dot"></span> Recovery Marketplace</div>
+    <h1>You are not alone in this.<br><em>Find your path forward.</em></h1>
+    <p class="hero-sub">A directory of recovery coaches, LCDCs, and peer specialists who understand where you have been. And a space for providers to find the people they are meant to help.</p>
+  </div>
+</section>
 
-  <form class="signup-form" id="signupForm" onsubmit="return false;">
-    <input type="email" id="signup-email" placeholder="Your email" required>
-    <select id="signup-role">
-      <option value="provider">I am a Recovery Provider</option>
-      <option value="explorer">Someone looking for support</option>
-    </select>
-    <button type="button" onclick="submitSignup()">Get early access</button>
-  </form>
-  <div class="signup-msg" id="signupMsg"></div>
-
-  <div class="values">
+<!-- VALUES -->
+<section class="values-section">
+  <div class="values-grid">
     <div class="value-card">
       <h3>No judgment.</h3>
       <p>Where you have been does not define where you are going.</p>
@@ -112,72 +167,111 @@ h1 em { color: var(--purple); font-style: italic; }
       <p>Who understand. That is what makes this different.</p>
     </div>
   </div>
+</section>
 
-  <div id="articles-section" style="margin-bottom:48px;">
-    <div style="font-size:0.63rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:20px;">Latest for Recovery</div>
-    <div id="articles-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;text-align:left;">
+<!-- ARTICLES -->
+<section class="articles-section" id="articles">
+  <div class="articles-inner">
+    <div class="section-eyebrow">Article Library</div>
+    <div class="filter-pills" id="filterPills">
+      <button class="filter-pill active" data-cat="all">All</button>
+      <button class="filter-pill" data-cat="Recovery Journey">Recovery Journey</button>
+      <button class="filter-pill" data-cat="Sobriety and Maintenance">Sobriety and Maintenance</button>
+      <button class="filter-pill" data-cat="Family and Relationships">Family and Relationships</button>
+      <button class="filter-pill" data-cat="Provider Resources">Provider Resources</button>
+      <button class="filter-pill" data-cat="Identity and Growth">Identity and Growth</button>
+    </div>
+    <div class="articles-grid" id="articles-grid">
       <p style="grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.85rem;">Loading articles...</p>
     </div>
   </div>
+</section>
 
-  <p class="footer-note">A project from <a href="https://www.ineedtherapy.org">ineedtherapy.org</a></p>
-</div>
+<!-- THE COMMONS -->
+<section class="commons-section">
+  <div class="commons-card">
+    <h2>Find your match on <em>The Commons</em></h2>
+    <p>The shared request board across all ineed sites. Post what you need anonymously. Let providers come to you.</p>
+    <a href="https://www.ineedtherapy.org/find-a-match.html" class="btn-commons">Find your match &rarr;</a>
+  </div>
+</section>
+
+<!-- SPRIXLE -->
+<section class="sprixle-section">
+  <div class="sprixle-card">
+    <div style="font-size:1.6rem;margin-bottom:14px;">&#127807;</div>
+    <h3>Continue your journey on Sprixle</h3>
+    <p>Private journaling, pattern tracking, and AI companion. Free to start &mdash; no credit card needed.</p>
+    <a href="https://www.sprixle.com" target="_blank" rel="noopener" class="btn-sprixle">Open Sprixle &rarr;</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span class="logo-i">i</span>need<span class="logo-recovery">recovery</span>.org</div>
+  <p class="footer-parent">A project from <a href="https://www.ineedtherapy.org">ineedtherapy.org</a></p>
+  <p class="footer-crisis">Not a crisis service &mdash; In crisis? Call or text 988</p>
+</footer>
 
 <script>
 const SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
 
-async function submitSignup() {
-  var email = document.getElementById('signup-email').value.trim();
-  var role = document.getElementById('signup-role').value;
-  var msg = document.getElementById('signupMsg');
-  if (!email) { msg.textContent = 'Please enter your email.'; return; }
+let allArticles = [];
 
-  try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/explorer_profiles', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': ANON_KEY,
-        'Authorization': 'Bearer ' + ANON_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        email: email,
-        role: role,
-        audience: 'recovery',
-        source: 'ineedrecovery.org'
-      })
-    });
-    if (res.ok || res.status === 409) {
-      msg.textContent = 'You are on the list. We will reach out when we launch.';
-      document.getElementById('signup-email').value = '';
-    } else {
-      msg.textContent = 'Something went wrong. Please try again.';
+// Session check — swap Login to Dashboard if logged in
+(function() {
+  const token = localStorage.getItem('sb_access_token');
+  if (token) {
+    const btn = document.getElementById('nav-login-btn');
+    if (btn) {
+      btn.textContent = 'Dashboard';
+      btn.href = '/dashboard.html';
     }
-  } catch(e) {
-    msg.textContent = 'Network error. Please try again.';
   }
-}
+})();
 
-// Load recovery articles
+// Load articles
 (async function() {
-  var grid = document.getElementById('articles-grid');
+  const grid = document.getElementById('articles-grid');
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/articles?audience=eq.recovery&order=created_at.desc&limit=6&select=title,slug,meta_description', {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?audience=eq.recovery&order=created_at.desc&limit=50&select=title,slug,meta_description,category', {
       headers: { 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + ANON_KEY }
     });
-    var articles = await res.json();
-    if (!articles || !articles.length) { grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.85rem;">Articles coming soon.</p>'; return; }
-    grid.innerHTML = articles.map(function(a) {
-      var href = 'https://www.ineedtherapy.org/article.html?slug=' + encodeURIComponent(a.slug);
-      return '<a href="' + href + '" target="_blank" style="display:block;padding:20px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor=\'#7c4a9e\'" onmouseout="this.style.borderColor=\'#2e2a3e\'">' +
-        '<div style="font-size:0.9rem;font-weight:700;color:var(--warm);line-height:1.4;margin-bottom:6px;">' + a.title + '</div>' +
-        '<div style="font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:8px;">' + (a.meta_description || '') + '</div>' +
-        '<span style="font-size:0.75rem;font-weight:700;color:var(--purple);">Read &rarr;</span></a>';
-    }).join('');
-  } catch(e) { grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.85rem;">Articles coming soon.</p>'; }
+    allArticles = await res.json();
+    if (!allArticles || !allArticles.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.85rem;">Articles coming soon.</p>';
+      return;
+    }
+    renderArticles('all');
+  } catch(e) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.85rem;">Articles coming soon.</p>';
+  }
 })();
+
+function renderArticles(category) {
+  const grid = document.getElementById('articles-grid');
+  const filtered = category === 'all' ? allArticles : allArticles.filter(function(a) { return a.category === category; });
+  if (!filtered.length) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.85rem;">No articles in this category yet.</p>';
+    return;
+  }
+  grid.innerHTML = filtered.map(function(a) {
+    return '<a href="/article.html?slug=' + encodeURIComponent(a.slug) + '" class="article-card">' +
+      '<div class="card-cat">' + (a.category || 'Recovery') + '</div>' +
+      '<div class="card-title">' + a.title + '</div>' +
+      '<div class="card-desc">' + (a.meta_description || '') + '</div>' +
+      '<span class="card-link">Read &rarr;</span></a>';
+  }).join('');
+}
+
+// Filter pills
+document.getElementById('filterPills').addEventListener('click', function(e) {
+  if (!e.target.classList.contains('filter-pill')) return;
+  document.querySelectorAll('.filter-pill').forEach(function(p) { p.classList.remove('active'); });
+  e.target.classList.add('active');
+  renderArticles(e.target.dataset.cat);
+});
 </script>
 </body>
 </html>

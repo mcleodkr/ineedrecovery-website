@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Dashboard | ineedrecovery.org</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
+  --warm: #faf8f4; --white: #ffffff; --muted: #8a8a9a; --border: #2e2a3e;
+  --r: 14px; --r-sm: 8px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--warm); color: #1a1a2e; }
+
+/* LOGIN SCREEN */
+.login-screen { position: fixed; inset: 0; z-index: 9999; background: var(--deep); display: flex; align-items: center; justify-content: center; }
+.login-screen.hidden { display: none; }
+.login-card { text-align: center; max-width: 400px; padding: 48px 40px; }
+.login-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: white; margin-bottom: 32px; }
+.login-logo .logo-i { color: var(--purple); font-style: italic; }
+.login-logo .logo-recovery { color: var(--purple); font-style: italic; }
+.login-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
+.login-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: white; margin-bottom: 8px; }
+.login-sub { font-size: 0.85rem; color: rgba(255,255,255,0.65); margin-bottom: 28px; line-height: 1.6; }
+.login-input { width: 100%; padding: 14px 18px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--r-sm); color: white; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.92rem; outline: none; text-align: center; transition: border-color 0.2s; }
+.login-input::placeholder { color: rgba(255,255,255,0.4); }
+.login-input:focus { border-color: var(--purple); }
+.login-btn { width: 100%; margin-top: 14px; background: var(--purple); color: white; border: none; padding: 14px; border-radius: var(--r-sm); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.login-btn:hover { background: #8c5aae; }
+.login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.login-msg { font-size: 0.8rem; margin-top: 14px; line-height: 1.5; min-height: 1.5em; }
+.login-msg.success { color: #b08cd4; }
+.login-msg.error { color: #e8806a; }
+
+/* DASHBOARD */
+.dashboard { display: none; }
+.dashboard.visible { display: block; }
+
+/* NAV */
+nav { position: sticky; top: 0; z-index: 300; display: flex; align-items: center; justify-content: space-between; padding: 14px 52px; background: rgba(26,26,46,0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--warm); text-decoration: none; }
+.logo .logo-i { color: var(--purple); font-style: italic; }
+.logo .logo-recovery { color: var(--purple); font-style: italic; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-badge { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple); background: rgba(124,74,158,0.15); padding: 5px 14px; border-radius: 20px; }
+.sign-out-btn { font-size: 0.78rem; font-weight: 700; color: var(--muted); background: none; border: 1.5px solid var(--border); padding: 6px 16px; border-radius: 50px; cursor: pointer; font-family: 'Cabinet Grotesk', sans-serif; transition: all 0.2s; }
+.sign-out-btn:hover { border-color: var(--purple); color: var(--purple); }
+
+/* CONTENT */
+.dash-wrap { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* GREETING */
+.greeting-section { text-align: center; margin-bottom: 48px; padding: 0 12px; }
+.greeting-text { font-family: 'Playfair Display', serif; font-size: clamp(1.25rem, 3vw, 1.65rem); line-height: 1.45; color: #1a1a2e; font-weight: 700; font-style: italic; margin-bottom: 14px; }
+.greeting-sub { font-size: 0.84rem; color: var(--muted); }
+.greeting-email { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
+
+/* CHECK-IN */
+.checkin-section { margin-bottom: 48px; }
+.checkin-prompt { font-size: 0.95rem; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; text-align: center; }
+.mood-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.mood-pill { padding: 10px 22px; border-radius: 50px; border: 1.5px solid #e0ddd5; background: white; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; font-weight: 600; color: #1a1a2e; cursor: pointer; transition: all 0.2s; }
+.mood-pill:hover { border-color: var(--purple); background: var(--purple-lt); }
+.mood-pill.selected { border-color: var(--purple); background: var(--purple); color: white; pointer-events: none; }
+.checkin-done { text-align: center; font-size: 0.88rem; color: var(--purple); font-weight: 600; margin-top: 12px; }
+
+/* SAVED ARTICLES */
+.section-label { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.saved-card { background: white; border: 1.5px solid #e0ddd5; border-radius: var(--r); padding: 20px; }
+.saved-article-link { display: block; padding: 10px 0; border-bottom: 1px solid #f0ede8; font-size: 0.88rem; font-weight: 600; color: #1a1a2e; text-decoration: none; transition: color 0.2s; }
+.saved-article-link:last-child { border-bottom: none; }
+.saved-article-link:hover { color: var(--purple); }
+
+/* REQUEST SECTION */
+.request-section { margin-bottom: 48px; }
+.request-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px; background: white; border: 1.5px solid #e0ddd5; border-radius: var(--r); cursor: pointer; transition: all 0.2s; }
+.request-header:hover { border-color: var(--purple); }
+.request-header-text { font-size: 0.9rem; font-weight: 600; color: #1a1a2e; }
+.request-toggle-btn { padding: 8px 18px; border-radius: 50px; border: none; background: var(--purple); color: white; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.request-body { display: none; padding: 24px; background: white; border: 1.5px solid #e0ddd5; border-top: none; border-radius: 0 0 var(--r) var(--r); }
+.request-body.open { display: block; }
+.request-header.expanded { border-radius: var(--r) var(--r) 0 0; }
+
+/* FORM FIELDS */
+.field-label { font-size: 0.72rem; font-weight: 700; color: #1a1a2e; display: block; margin-bottom: 5px; }
+.field-select, .field-input, .field-textarea { width: 100%; padding: 10px 12px; border: 1.5px solid #e0ddd5; border-radius: 8px; font-family: inherit; font-size: 0.85rem; color: #1a1a2e; background: white; outline: none; }
+.field-select:focus, .field-input:focus, .field-textarea:focus { border-color: var(--purple); }
+.field-textarea { resize: vertical; }
+
+/* SPRIXLE CARD */
+.sprixle-card { background: var(--purple-lt); border: 1.5px solid rgba(124,74,158,0.2); border-radius: var(--r); padding: 28px; margin-bottom: 48px; text-align: center; }
+
+/* FOOTER */
+footer { background: var(--deep); padding: 48px 80px; text-align: center; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: white; margin-bottom: 12px; }
+.footer-logo .logo-i { color: var(--purple); font-style: italic; }
+.footer-logo .logo-recovery { color: var(--purple); font-style: italic; }
+.footer-crisis { font-size: 0.78rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.footer-crisis a { color: rgba(255,255,255,0.7); text-decoration: underline; }
+
+@media (max-width: 700px) {
+  nav { padding: 12px 20px; }
+  .dash-wrap { padding: 32px 18px 60px; }
+  .mood-pills { gap: 8px; }
+  .mood-pill { padding: 8px 16px; font-size: 0.82rem; }
+  footer { padding: 36px 24px; }
+  .nav-badge { display: none; }
+  .request-header { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo"><span class="logo-i">i</span>need<span class="logo-recovery">recovery</span>.org</div>
+    <span class="login-icon">&#128274;</span>
+    <h2 class="login-title">Welcome back</h2>
+    <p class="login-sub">Enter your email and we will send you a magic link to access your dashboard.</p>
+    <form id="loginForm" onsubmit="return false;">
+      <input type="email" class="login-input" id="loginEmail" placeholder="you@email.com" required autocomplete="email">
+      <button type="submit" class="login-btn" id="loginBtn">Send magic link</button>
+    </form>
+    <p class="login-msg" id="loginMsg"></p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="logo"><span class="logo-i">i</span>need<span class="logo-recovery">recovery</span>.org</a>
+    <div class="nav-right">
+      <span class="nav-badge">Your Dashboard</span>
+      <button class="sign-out-btn" onclick="signOut()">Sign out</button>
+    </div>
+  </nav>
+
+  <div class="dash-wrap">
+
+    <!-- GREETING -->
+    <div class="greeting-section">
+      <div class="greeting-text" id="greetingText"></div>
+      <p class="greeting-sub">Take a moment to check in before you begin.</p>
+      <p class="greeting-email" id="greetingEmail"></p>
+    </div>
+
+    <!-- DAILY CHECK-IN -->
+    <div class="checkin-section" id="checkinSection">
+      <div class="checkin-prompt">How are you showing up today?</div>
+      <div class="mood-pills" id="moodPills">
+        <button class="mood-pill" data-mood="Thriving">Thriving</button>
+        <button class="mood-pill" data-mood="Okay">Okay</button>
+        <button class="mood-pill" data-mood="Struggling">Struggling</button>
+        <button class="mood-pill" data-mood="Exhausted">Exhausted</button>
+        <button class="mood-pill" data-mood="Not sure">Not sure</button>
+      </div>
+      <div class="checkin-done" id="checkinDone" style="display:none;"></div>
+    </div>
+
+    <!-- SAVED ARTICLES -->
+    <div style="margin-bottom:48px;">
+      <div class="section-label">Saved articles</div>
+      <div class="saved-card" id="savedArticlesContent">
+        <p style="font-size:0.85rem;color:var(--muted);font-style:italic;">Loading...</p>
+      </div>
+    </div>
+
+    <!-- POST A REQUEST -->
+    <div class="request-section" id="requestSection">
+      <div class="request-header" id="requestHeader" onclick="toggleRequestForm()">
+        <span class="request-header-text">Ready to connect? Let a provider reach out to you.</span>
+        <button class="request-toggle-btn" id="requestToggleBtn">Open</button>
+      </div>
+      <div class="request-body" id="requestBody">
+        <div id="requestFormWrap">
+          <form id="requestForm" onsubmit="return false;">
+            <div style="margin-bottom:14px;">
+              <label class="field-label">What are you struggling with?</label>
+              <select id="req-struggle" class="field-select">
+                <option value="">Select...</option>
+                <option>Substance use</option><option>Alcohol</option><option>Relapse prevention</option>
+                <option>Early recovery</option><option>Family dynamics</option><option>Identity</option>
+                <option>Grief</option><option>Life transitions</option><option>Other</option>
+              </select>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+              <div>
+                <label class="field-label">Support type</label>
+                <select id="req-support" class="field-select">
+                  <option>Therapy</option><option>Coaching</option><option>Open to any provider</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label">Format</label>
+                <select id="req-format" class="field-select">
+                  <option>Telehealth</option><option>In-Person</option><option>Either</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+              <div>
+                <label class="field-label">Availability</label>
+                <select id="req-avail" class="field-select">
+                  <option>Mornings (before noon)</option><option>Evenings (after 5pm)</option><option>Weekends only</option><option>Flexible schedule</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label">Budget range</label>
+                <select id="req-budget" class="field-select">
+                  <option>$0 — Pro bono only</option><option>Under $50</option><option>$50-$100</option><option>$100-$150</option><option>$150+</option><option>Open to sliding scale</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-bottom:14px;">
+              <label class="field-label">Anything else? <span style="font-weight:400;color:var(--muted);">(optional, 300 chars)</span></label>
+              <textarea id="req-notes" class="field-textarea" maxlength="300" rows="3" placeholder="Anything you want providers to know..."></textarea>
+            </div>
+            <button type="button" onclick="submitRequest()" style="background:var(--purple);color:white;border:none;padding:12px 28px;border-radius:50px;font-family:inherit;font-size:0.88rem;font-weight:700;cursor:pointer;">Post my request &rarr;</button>
+          </form>
+        </div>
+        <div id="activeRequestWrap" style="display:none;">
+          <div id="activeRequestContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPRIXLE CARD -->
+    <div class="sprixle-card">
+      <div style="font-size:1.6rem;margin-bottom:12px;">&#127807;</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Continue your journey on Sprixle</div>
+      <p style="font-size:0.84rem;color:var(--muted);line-height:1.6;margin-bottom:18px;">Private journaling, pattern tracking, and AI companion. Free to start &mdash; no credit card needed.</p>
+      <a href="https://www.sprixle.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:white;padding:11px 24px;border-radius:50px;font-family:'Cabinet Grotesk',sans-serif;font-size:0.85rem;font-weight:700;text-decoration:none;transition:background 0.2s;">Open Sprixle &rarr;</a>
+      <div style="margin-top:14px;"><a href="https://www.ineedtherapy.org/wellness-snapshot.html" style="font-size:0.78rem;font-weight:700;color:var(--purple);text-decoration:none;">Take a Wellness Snapshot &rarr;</a></div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><span class="logo-i">i</span>need<span class="logo-recovery">recovery</span>.org</div>
+    <p class="footer-crisis">This is not a crisis service. If you are in crisis, call or text <a href="tel:988">988</a>.</p>
+  </footer>
+
+</div>
+
+<script>
+var SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
+var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
+
+var currentAccessToken = null;
+var currentUserEmail = null;
+
+function supaFetch(path, opts) {
+  opts = opts || {};
+  var headers = Object.assign({
+    'apikey': ANON_KEY,
+    'Content-Type': 'application/json'
+  }, opts.headers || {});
+  if (currentAccessToken) {
+    headers['Authorization'] = 'Bearer ' + currentAccessToken;
+  }
+  return fetch(SUPABASE_URL + path, Object.assign({}, opts, { headers: headers }));
+}
+
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ── Auth ──
+async function checkAuth() {
+  var hash = window.location.hash.substring(1);
+  if (hash) {
+    var params = new URLSearchParams(hash);
+    var accessToken = params.get('access_token');
+    if (accessToken) {
+      window.history.replaceState(null, '', window.location.pathname);
+      currentAccessToken = accessToken;
+      localStorage.setItem('sb_access_token', accessToken);
+      return await getUserFromToken(accessToken);
+    }
+  }
+  var saved = localStorage.getItem('sb_access_token');
+  if (saved) {
+    currentAccessToken = saved;
+    return await getUserFromToken(saved);
+  }
+  return null;
+}
+
+async function getUserFromToken(token) {
+  try {
+    var res = await fetch(SUPABASE_URL + '/auth/v1/user', {
+      headers: { 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + token }
+    });
+    if (!res.ok) { localStorage.removeItem('sb_access_token'); return null; }
+    var user = await res.json();
+    currentUserEmail = user.email;
+    return user;
+  } catch (e) { localStorage.removeItem('sb_access_token'); return null; }
+}
+
+async function sendMagicLink(email) {
+  var res = await fetch(SUPABASE_URL + '/auth/v1/magiclink', {
+    method: 'POST',
+    headers: { 'apikey': ANON_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' } })
+  });
+  return res.ok;
+}
+
+function signOut() {
+  localStorage.removeItem('sb_access_token');
+  currentAccessToken = null;
+  currentUserEmail = null;
+  window.location.reload();
+}
+
+// ── Data Loaders ──
+async function loadTodayCheckin(email) {
+  var today = new Date().toISOString().slice(0, 10);
+  try {
+    var res = await supaFetch('/rest/v1/explorer_checkins?user_email=eq.' + encodeURIComponent(email) + '&created_at=gte.' + today + 'T00:00:00&select=mood&limit=1');
+    if (res.ok) { var rows = await res.json(); if (rows.length > 0) return rows[0].mood; }
+  } catch (e) {}
+  return null;
+}
+
+async function loadSavedArticles(email) {
+  try {
+    var res = await supaFetch('/rest/v1/saved_articles?user_email=eq.' + encodeURIComponent(email) + '&select=article_slug,article_title&order=saved_at.desc&limit=20');
+    if (res.ok) return await res.json();
+  } catch (e) {}
+  return [];
+}
+
+async function loadActiveRequest(email) {
+  try {
+    var res = await supaFetch('/rest/v1/explorer_requests?user_email=eq.' + encodeURIComponent(email) + '&status=eq.active&select=id,struggle,support_type,format,availability,budget,notes,created_at&order=created_at.desc&limit=1');
+    if (res.ok) { var rows = await res.json(); if (rows.length > 0) return rows[0]; }
+  } catch (e) {}
+  return null;
+}
+
+// ── Greeting ──
+var GREETINGS = [
+  "Before you begin \u2014 breathe. You are in the right space.",
+  "Take a moment. Clear the noise. This space is yours.",
+  "You came back. That is not small. Settle in.",
+  "Whatever you are carrying today \u2014 you can set it down here for a moment.",
+  "No rush. No pressure. Just you, right now.",
+  "This is your space. The rest can wait.",
+  "You do not have to have it together to show up. You just have to show up.",
+  "Take a breath. You made it to today.",
+  "Arrive before you begin. Just a moment \u2014 that is all it takes.",
+  "Some days are harder than others. This space holds all of them.",
+  "Be still for just a moment. You are allowed to pause.",
+  "You are not behind. You are exactly where you need to be.",
+  "Today does not need to be perfect. It just needs to be honest.",
+  "Showing up for yourself is an act of courage. You are doing it right now.",
+  "Let the weight of the day stay outside for a moment. Come in.",
+  "This is a soft place to land. Take your time.",
+  "You do not have to explain yourself here. Just be.",
+  "Every time you return, you are choosing yourself. That matters.",
+  "There is no wrong way to show up. Just show up.",
+  "Give yourself permission to be exactly where you are today.",
+  "You are not too much. You are not too little. You are enough.",
+  "This moment belongs to you. No one else needs anything from you right now.",
+  "Healing is not linear. Showing up on the hard days counts double.",
+  "You made it through everything that tried to stop you. You are still here.",
+  "Before you check in with us \u2014 take one breath just for you.",
+  "Rest is not the same as giving up. Sometimes rest is the whole work.",
+  "You are allowed to need support. That is why this space exists.",
+  "Whatever brought you here today \u2014 you made the right call.",
+  "Progress lives in the small moments. Like this one.",
+  "You have been carrying a lot. You do not have to carry it alone.",
+  "The fact that you are here means something is shifting. Trust that."
+];
+
+function renderGreeting() {
+  var day = new Date().getDate();
+  document.getElementById('greetingText').textContent = GREETINGS[day - 1] || GREETINGS[0];
+}
+
+// ── Check-in ──
+function setupCheckin(todayMood) {
+  var pills = document.querySelectorAll('.mood-pill');
+  var doneEl = document.getElementById('checkinDone');
+
+  if (todayMood) {
+    pills.forEach(function(p) {
+      if (p.dataset.mood === todayMood) p.classList.add('selected');
+      else p.style.display = 'none';
+    });
+    doneEl.style.display = 'block';
+    doneEl.innerHTML = '&#10004; You checked in today: <strong>' + escapeHtml(todayMood) + '</strong>';
+    return;
+  }
+
+  pills.forEach(function(p) {
+    p.addEventListener('click', async function() {
+      var mood = this.dataset.mood;
+      pills.forEach(function(b) {
+        if (b.dataset.mood === mood) b.classList.add('selected');
+        else b.style.display = 'none';
+      });
+      doneEl.style.display = 'block';
+      doneEl.innerHTML = '&#10004; You checked in today: <strong>' + escapeHtml(mood) + '</strong>';
+      try {
+        await supaFetch('/rest/v1/explorer_checkins', {
+          method: 'POST',
+          headers: { 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ user_email: currentUserEmail, mood: mood, created_at: new Date().toISOString() })
+        });
+      } catch (e) {}
+    });
+  });
+}
+
+// ── Saved Articles ──
+function renderSavedArticles(articles) {
+  var el = document.getElementById('savedArticlesContent');
+  if (!articles || articles.length === 0) {
+    el.innerHTML = '<p style="font-size:0.85rem;color:var(--muted);font-style:italic;">No saved articles yet. Save articles while reading to find them here.</p>';
+    return;
+  }
+  el.innerHTML = articles.map(function(a) {
+    return '<a href="/article.html?slug=' + encodeURIComponent(a.article_slug) + '" class="saved-article-link">' + escapeHtml(a.article_title || a.article_slug) + '</a>';
+  }).join('');
+}
+
+// ── Request ──
+function toggleRequestForm() {
+  var header = document.getElementById('requestHeader');
+  var body = document.getElementById('requestBody');
+  var btn = document.getElementById('requestToggleBtn');
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+    header.classList.remove('expanded');
+    btn.textContent = 'Open';
+  } else {
+    body.classList.add('open');
+    header.classList.add('expanded');
+    btn.textContent = 'Close';
+  }
+}
+
+async function submitRequest() {
+  var struggle = document.getElementById('req-struggle').value;
+  if (!struggle) { alert('Please select what you are struggling with.'); return; }
+
+  var data = {
+    user_email: currentUserEmail,
+    struggle: struggle,
+    support_type: document.getElementById('req-support').value,
+    format: document.getElementById('req-format').value,
+    availability: document.getElementById('req-avail').value,
+    budget: document.getElementById('req-budget').value,
+    notes: document.getElementById('req-notes').value || null,
+    status: 'active',
+    audience: 'recovery',
+    source: 'ineedrecovery.org',
+    created_at: new Date().toISOString()
+  };
+
+  try {
+    var res = await supaFetch('/rest/v1/explorer_requests', {
+      method: 'POST',
+      headers: { 'Prefer': 'return=representation' },
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      var rows = await res.json();
+      showActiveRequest(rows[0] || data);
+    } else {
+      alert('Could not post request. Please try again.');
+    }
+  } catch(e) {
+    alert('Network error. Please try again.');
+  }
+}
+
+function showActiveRequest(req) {
+  document.getElementById('requestFormWrap').style.display = 'none';
+  var wrap = document.getElementById('activeRequestWrap');
+  wrap.style.display = 'block';
+  document.getElementById('activeRequestContent').innerHTML =
+    '<div style="background:var(--purple-lt);border-radius:var(--r-sm);padding:20px;text-align:center;">' +
+    '<div style="font-size:0.62rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;">Active Request</div>' +
+    '<div style="font-size:0.95rem;font-weight:700;color:#1a1a2e;margin-bottom:6px;">' + escapeHtml(req.struggle || '') + '</div>' +
+    '<div style="font-size:0.82rem;color:var(--muted);line-height:1.6;">' +
+    escapeHtml(req.support_type || '') + ' &middot; ' + escapeHtml(req.format || '') + ' &middot; ' + escapeHtml(req.budget || '') +
+    '</div>' +
+    '<p style="font-size:0.78rem;color:var(--purple);margin-top:12px;font-weight:600;">Your request is live. Providers can see it now.</p>' +
+    '</div>';
+}
+
+// ── Login Form ──
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var email = document.getElementById('loginEmail').value.trim();
+  var msg = document.getElementById('loginMsg');
+  var btn = document.getElementById('loginBtn');
+  if (!email) return;
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  msg.className = 'login-msg';
+  msg.textContent = '';
+  var ok = await sendMagicLink(email);
+  if (ok) {
+    msg.className = 'login-msg success';
+    msg.textContent = 'Check your email for a magic link.';
+    btn.textContent = 'Link sent';
+  } else {
+    msg.className = 'login-msg error';
+    msg.textContent = 'Could not send link. Please try again.';
+    btn.disabled = false;
+    btn.textContent = 'Send magic link';
+  }
+});
+
+// ── Init ──
+(async function() {
+  var user = await checkAuth();
+  if (!user) {
+    document.getElementById('loginScreen').classList.remove('hidden');
+    return;
+  }
+
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('dashboard').classList.add('visible');
+  document.getElementById('greetingEmail').textContent = currentUserEmail;
+
+  renderGreeting();
+
+  var todayMood = await loadTodayCheckin(currentUserEmail);
+  setupCheckin(todayMood);
+
+  var savedArticles = await loadSavedArticles(currentUserEmail);
+  renderSavedArticles(savedArticles);
+
+  var activeReq = await loadActiveRequest(currentUserEmail);
+  if (activeReq) {
+    showActiveRequest(activeReq);
+    var body = document.getElementById('requestBody');
+    body.classList.add('open');
+    document.getElementById('requestHeader').classList.add('expanded');
+    document.getElementById('requestToggleBtn').textContent = 'Close';
+  }
+})();
+</script>
+</body>
+</html>

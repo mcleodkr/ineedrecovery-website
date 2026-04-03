@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome — ineedrecovery.org</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
+  --warm: #faf8f4; --white: #ffffff; --muted: #8a8a9a; --border: #2e2a3e;
+  --r: 14px; --r-sm: 8px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--deep); color: var(--warm); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+.welcome-card { max-width: 460px; width: 100%; padding: 52px 40px; text-align: center; }
+
+.welcome-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--warm); margin-bottom: 48px; }
+.welcome-logo .logo-i { color: var(--purple); font-style: italic; }
+.welcome-logo .logo-recovery { color: var(--purple); font-style: italic; }
+
+.welcome-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
+
+h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.4rem); line-height: 1.15; color: var(--warm); margin-bottom: 14px; }
+h1 em { color: var(--purple); font-style: italic; }
+
+.subtitle { font-size: 0.9rem; line-height: 1.7; color: var(--muted); margin-bottom: 40px; }
+
+/* MODE TOGGLE */
+.mode-toggle { display: flex; justify-content: center; gap: 24px; margin-bottom: 36px; }
+.mode-toggle a { font-size: 0.9rem; font-weight: 600; color: var(--muted); text-decoration: none; cursor: pointer; padding-bottom: 4px; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.mode-toggle a.active { color: var(--purple); border-bottom-color: var(--purple); }
+
+/* FORM */
+.form-group { margin-bottom: 20px; text-align: left; }
+.form-group label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--warm); margin-bottom: 8px; }
+.form-group input { width: 100%; padding: 14px 18px; background: rgba(255,255,255,0.06); border: 1.5px solid var(--border); border-radius: var(--r-sm); color: var(--warm); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.92rem; outline: none; transition: border-color 0.2s; }
+.form-group input::placeholder { color: var(--muted); }
+.form-group input:focus { border-color: var(--purple); }
+
+.btn-submit { width: 100%; background: var(--purple); color: var(--white); border: none; padding: 15px; border-radius: var(--r-sm); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 4px; }
+.btn-submit:hover { background: #8c5aae; }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.form-hint { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 14px; }
+
+.form-error { display: none; background: rgba(212,90,42,0.15); border: 1px solid rgba(212,90,42,0.3); border-radius: var(--r-sm); padding: 12px 16px; margin-bottom: 20px; font-size: 0.82rem; color: #e8806a; text-align: left; }
+.form-error.visible { display: block; }
+
+/* SUCCESS */
+.success-state { display: none; text-align: center; padding: 24px 0; }
+.success-state.visible { display: block; }
+.success-icon { width: 56px; height: 56px; background: rgba(124,74,158,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+.success-icon svg { width: 28px; height: 28px; color: var(--purple); }
+.success-state h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--warm); margin-bottom: 10px; line-height: 1.3; }
+.success-state p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+.success-state a { color: var(--purple); font-weight: 600; text-decoration: underline; }
+
+/* HIDDEN */
+.returning-form { display: none; }
+.returning-form.visible { display: block; }
+
+/* FOOTER */
+.welcome-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; text-align: center; font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+.welcome-footer a { color: var(--purple); text-decoration: none; }
+
+@media (max-width: 600px) {
+  .welcome-card { padding: 40px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="welcome-card">
+  <div class="welcome-logo"><span class="logo-i">i</span>need<span class="logo-recovery">recovery</span>.org</div>
+
+  <span class="welcome-icon">&#128274;</span>
+  <h1>Welcome back.<br><em>Create your space.</em></h1>
+  <p class="subtitle">We do not do passwords here. Enter your email and we will send you a secure magic link. Nothing to forget, nothing to reset.</p>
+
+  <!-- MODE TOGGLE -->
+  <div class="mode-toggle" id="mode-toggle">
+    <a href="javascript:void(0)" id="toggle-new" class="active">New here?</a>
+    <a href="javascript:void(0)" id="toggle-returning">Already have a space?</a>
+  </div>
+
+  <!-- NEW USER -->
+  <div id="new-user-flow">
+    <div class="form-error" id="form-error"></div>
+    <form id="signup-form" autocomplete="off">
+      <div class="form-group">
+        <label for="display-name">What would you like to be called?</label>
+        <input type="text" id="display-name" name="display_name" placeholder="Real name, nickname, or anonymous" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+      <button type="submit" class="btn-submit" id="submit-btn">Create my space &rarr;</button>
+    </form>
+    <p class="form-hint">We will send a magic link to verify your email.</p>
+  </div>
+
+  <!-- RETURNING USER -->
+  <div class="returning-form" id="returning-flow">
+    <div class="form-error" id="returning-error"></div>
+    <form id="returning-form" autocomplete="off">
+      <div class="form-group">
+        <label for="returning-email">Email address</label>
+        <input type="email" id="returning-email" name="email" placeholder="you@example.com" required>
+      </div>
+      <button type="submit" class="btn-submit" id="returning-btn">Send my link &rarr;</button>
+    </form>
+    <p class="form-hint" id="returning-hint">We will send a secure link to your inbox.</p>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-state" id="success-state">
+    <div class="success-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+    </div>
+    <h2>Check your email — your link is waiting.</h2>
+    <p>Did not get it? Check spam or <a href="javascript:void(0)" onclick="resetForm()">try again</a>.</p>
+  </div>
+</div>
+
+<div class="welcome-footer">
+  <a href="/">ineedrecovery.org</a> &mdash; Not a crisis service. In crisis? Call or text 988.
+</div>
+
+<script>
+(function() {
+  var SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
+  var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
+
+  // Check for magic link callback in hash
+  var hash = window.location.hash.substring(1);
+  if (hash) {
+    var params = new URLSearchParams(hash);
+    var accessToken = params.get('access_token');
+    if (accessToken) {
+      localStorage.setItem('sb_access_token', accessToken);
+      window.location.href = '/dashboard.html';
+      return;
+    }
+  }
+
+  // If already logged in, redirect
+  var saved = localStorage.getItem('sb_access_token');
+  if (saved) {
+    window.location.href = '/dashboard.html';
+    return;
+  }
+
+  var toggleNew = document.getElementById('toggle-new');
+  var toggleReturning = document.getElementById('toggle-returning');
+  var newUserFlow = document.getElementById('new-user-flow');
+  var returningFlow = document.getElementById('returning-flow');
+  var successState = document.getElementById('success-state');
+  var modeToggle = document.getElementById('mode-toggle');
+
+  toggleNew.addEventListener('click', function() {
+    toggleNew.classList.add('active');
+    toggleReturning.classList.remove('active');
+    newUserFlow.style.display = '';
+    returningFlow.classList.remove('visible');
+  });
+
+  toggleReturning.addEventListener('click', function() {
+    toggleReturning.classList.add('active');
+    toggleNew.classList.remove('active');
+    newUserFlow.style.display = 'none';
+    returningFlow.classList.add('visible');
+  });
+
+  // New user signup
+  var signupForm = document.getElementById('signup-form');
+  var formError = document.getElementById('form-error');
+  var submitBtn = document.getElementById('submit-btn');
+
+  signupForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    formError.classList.remove('visible');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Setting up your space...';
+
+    var displayName = document.getElementById('display-name').value.trim();
+    var email = document.getElementById('email').value.trim();
+
+    if (!displayName || !email) {
+      formError.textContent = 'Please fill in both fields.';
+      formError.classList.add('visible');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Create my space \u2192';
+      return;
+    }
+
+    try {
+      // Save profile
+      await fetch(SUPABASE_URL + '/rest/v1/explorer_profiles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': ANON_KEY,
+          'Authorization': 'Bearer ' + ANON_KEY,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          email: email,
+          display_name: displayName,
+          role: 'explorer',
+          audience: 'recovery',
+          source: 'ineedrecovery.org'
+        })
+      });
+
+      // Send magic link
+      var res = await fetch(SUPABASE_URL + '/auth/v1/magiclink', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + ANON_KEY },
+        body: JSON.stringify({ email: email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' } })
+      });
+
+      if (!res.ok) {
+        var err = await res.json().catch(function() { return {}; });
+        throw new Error(err.msg || err.message || 'Could not send link.');
+      }
+
+      newUserFlow.style.display = 'none';
+      modeToggle.style.display = 'none';
+      successState.classList.add('visible');
+    } catch(err) {
+      formError.textContent = err.message || 'Something went wrong. Please try again.';
+      formError.classList.add('visible');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Create my space \u2192';
+    }
+  });
+
+  // Returning user
+  var returningFormEl = document.getElementById('returning-form');
+  var returningBtn = document.getElementById('returning-btn');
+  var returningError = document.getElementById('returning-error');
+
+  returningFormEl.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    returningError.classList.remove('visible');
+    returningBtn.disabled = true;
+    returningBtn.textContent = 'Sending...';
+
+    var email = document.getElementById('returning-email').value.trim();
+    if (!email) {
+      returningError.textContent = 'Please enter your email.';
+      returningError.classList.add('visible');
+      returningBtn.disabled = false;
+      returningBtn.textContent = 'Send my link \u2192';
+      return;
+    }
+
+    try {
+      var res = await fetch(SUPABASE_URL + '/auth/v1/magiclink', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + ANON_KEY },
+        body: JSON.stringify({ email: email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' } })
+      });
+
+      if (!res.ok) {
+        var err = await res.json().catch(function() { return {}; });
+        throw new Error(err.msg || err.message || 'Could not send link.');
+      }
+
+      returningFlow.style.display = 'none';
+      modeToggle.style.display = 'none';
+      successState.classList.add('visible');
+    } catch(err) {
+      returningError.textContent = err.message || 'Something went wrong. Please try again.';
+      returningError.classList.add('visible');
+      returningBtn.disabled = false;
+      returningBtn.textContent = 'Send my link \u2192';
+    }
+  });
+
+  window.resetForm = function() {
+    successState.classList.remove('visible');
+    modeToggle.style.display = 'flex';
+    newUserFlow.style.display = '';
+    returningFlow.classList.remove('visible');
+    toggleNew.classList.add('active');
+    toggleReturning.classList.remove('active');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Create my space \u2192';
+    returningBtn.disabled = false;
+    returningBtn.textContent = 'Send my link \u2192';
+    formError.classList.remove('visible');
+    returningError.classList.remove('visible');
+  };
+})();
+</script>
+</body>
+</html>

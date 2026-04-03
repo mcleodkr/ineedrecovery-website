@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Self-Assessment Quizzes | ineedrecovery.org</title>
+<meta name="description" content="Free recovery self-assessments to help you understand what you are experiencing and what kind of support might help.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
+  --warm: #faf8f4; --white: #ffffff; --muted: #8a8a9a; --border: #2e2a3e;
+  --r: 14px; --r-sm: 8px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--warm); color: #1a1a2e; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 300; display: flex; align-items: center; justify-content: space-between; padding: 14px 52px; background: rgba(26,26,46,0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--warm); text-decoration: none; }
+.logo .logo-i { color: var(--purple); font-style: italic; }
+.logo .logo-recovery { color: var(--purple); font-style: italic; }
+.nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+.nav-links a { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--purple); }
+.nav-pill { background: var(--purple); color: var(--white) !important; padding: 8px 18px; border-radius: 50px; }
+.nav-pill:hover { background: #8c5aae !important; }
+
+/* PAGE HEADER */
+.page-header { background: var(--deep); padding: 120px 80px 80px; position: relative; overflow: hidden; }
+.page-header::after { content: 'ASSESS'; font-family: 'Playfair Display', serif; font-size: 16rem; font-weight: 900; color: rgba(255,255,255,0.05); position: absolute; right: -40px; top: 50%; transform: translateY(-50%); pointer-events: none; user-select: none; line-height: 1; }
+.header-inner { max-width: 680px; position: relative; z-index: 2; }
+.header-eyebrow { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #b08cd4; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.eyebrow-dot { width: 7px; height: 7px; background: #b08cd4; border-radius: 50%; }
+.page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4vw, 3.8rem); line-height: 1.08; letter-spacing: -0.02em; color: white; margin-bottom: 20px; }
+.page-header h1 em { color: #b08cd4; font-style: italic; }
+.page-header p { font-size: 0.95rem; line-height: 1.75; color: rgba(255,255,255,0.7); max-width: 520px; }
+
+/* CONTENT */
+.quizzes-wrap { max-width: 1100px; margin: 0 auto; padding: 72px 52px 100px; }
+
+/* CATEGORY */
+.category-section { margin-bottom: 64px; }
+.category-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #e0ddd5; display: flex; align-items: center; gap: 10px; }
+.category-count { background: var(--purple-lt); color: var(--purple); font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+
+/* QUIZ CARDS */
+.quiz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.quiz-card { background: white; border: 1.5px solid #e0ddd5; border-radius: var(--r); overflow: hidden; cursor: pointer; transition: all 0.25s; position: relative; }
+.quiz-card:hover { border-color: var(--purple); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(124,74,158,0.1); }
+.qc-top { height: 6px; }
+.qc-body { padding: 24px; }
+.qc-type { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.qc-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; line-height: 1.3; color: #1a1a2e; margin-bottom: 9px; }
+.qc-desc { font-size: 0.78rem; line-height: 1.6; color: var(--muted); margin-bottom: 16px; }
+.qc-footer { display: flex; align-items: center; justify-content: space-between; }
+.qc-meta { font-size: 0.7rem; color: var(--muted); }
+.qc-btn { background: var(--purple); color: white; padding: 7px 16px; border-radius: 50px; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.75rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
+.qc-btn:hover { background: #8c5aae; }
+
+/* QUIZ MODAL */
+.quiz-overlay { position: fixed; inset: 0; z-index: 400; background: rgba(26,26,46,0.85); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
+.quiz-overlay.open { opacity: 1; pointer-events: all; }
+.quiz-modal { background: white; border-radius: var(--r); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; transform: translateY(28px); transition: transform 0.3s; }
+.quiz-overlay.open .quiz-modal { transform: translateY(0); }
+.quiz-modal-header { background: var(--deep); padding: 32px 36px 28px; position: relative; }
+.quiz-modal-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.1); border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.quiz-modal-close:hover { background: rgba(255,255,255,0.2); }
+.qm-eyebrow { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #b08cd4; margin-bottom: 8px; }
+.qm-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: white; line-height: 1.2; margin-bottom: 6px; }
+.qm-desc { font-size: 0.82rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+.quiz-modal-body { padding: 32px 36px; }
+.qm-progress { height: 3px; background: #e0ddd5; border-radius: 2px; margin-bottom: 28px; overflow: hidden; }
+.qm-progress-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.4s ease; }
+.qm-question { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-style: italic; color: #1a1a2e; margin-bottom: 22px; line-height: 1.4; }
+.qm-options { display: flex; flex-direction: column; gap: 9px; }
+.qm-opt { display: flex; align-items: center; gap: 13px; padding: 13px 16px; border: 2px solid #e0ddd5; border-radius: var(--r-sm); cursor: pointer; background: white; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.9rem; font-weight: 500; color: #1a1a2e; transition: all 0.15s; text-align: left; width: 100%; }
+.qm-opt:hover { border-color: var(--purple); background: var(--purple-lt); }
+.qm-opt.selected { border-color: var(--purple); background: var(--purple-lt); font-weight: 700; }
+.qm-opt-dot { width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e0ddd5; flex-shrink: 0; transition: all 0.15s; background: white; }
+.qm-opt.selected .qm-opt-dot { background: var(--purple); border-color: var(--purple); }
+.qm-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 22px; padding-top: 20px; border-top: 1px solid #e0ddd5; }
+.qm-counter { font-size: 0.76rem; color: var(--muted); font-weight: 600; }
+.qm-btn-next { background: var(--deep); color: white; padding: 10px 24px; border-radius: 50px; border: none; cursor: pointer; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.86rem; font-weight: 700; transition: all 0.2s; }
+.qm-btn-next:hover { background: var(--purple); }
+.qm-btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+.qm-result { display: none; text-align: center; padding: 12px 0 8px; }
+.qm-result.show { display: block; animation: fadeUp 0.4s ease; }
+.qm-result-label { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--purple); margin-bottom: 10px; }
+.qm-result-name { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.7rem; color: #1a1a2e; margin-bottom: 14px; }
+.qm-result-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; margin-bottom: 28px; max-width: 440px; margin-left: auto; margin-right: auto; }
+.qm-result-actions { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.qm-result-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: white; padding: 12px 28px; border-radius: 50px; font-size: 0.88rem; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.qm-result-cta:hover { background: #8c5aae; transform: translateY(-2px); }
+.qm-retake { background: none; border: 1.5px solid #e0ddd5; color: var(--muted); padding: 10px 22px; border-radius: 50px; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.qm-retake:hover { border-color: var(--purple); color: var(--purple); }
+
+/* LOADING */
+.loading { text-align: center; padding: 80px; color: var(--muted); }
+.loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
+.loading-dot { width: 8px; height: 8px; background: var(--purple); border-radius: 50%; animation: dotpulse 1.2s ease-in-out infinite; }
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotpulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+
+/* FOOTER */
+footer { background: var(--deep); padding: 28px 52px; display: flex; justify-content: space-between; align-items: center; }
+.f-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: white; text-decoration: none; }
+.f-logo .logo-i { color: var(--purple); font-style: italic; }
+.f-logo .logo-recovery { color: var(--purple); font-style: italic; }
+.f-note { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
+
+@media (max-width: 900px) {
+  nav { padding: 12px 20px; }
+  .nav-links { display: none; }
+  .page-header { padding: 100px 24px 60px; }
+  .quizzes-wrap { padding: 48px 24px 80px; }
+  .quiz-grid { grid-template-columns: 1fr; }
+  footer { padding: 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/"><span class="logo-i">i</span><span>need</span><span class="logo-recovery">recovery</span><span>.org</span></a>
+  <ul class="nav-links">
+    <li><a href="/#articles">Articles</a></li>
+    <li><a href="/quizzes.html" class="active">Quizzes</a></li>
+    <li><a href="/dashboard.html">Dashboard</a></li>
+    <li><a href="/welcome.html" class="nav-pill" id="nav-login-btn">Login</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="header-inner">
+    <div class="header-eyebrow"><span class="eyebrow-dot"></span> Self-Assessments</div>
+    <h1>Understand what you are<br>carrying <em>right now.</em></h1>
+    <p>These short assessments will not diagnose you — but they can help you name what you are feeling and point you toward the kind of support that actually fits.</p>
+  </div>
+</div>
+
+<div class="quizzes-wrap" id="quizzes-wrap">
+  <div class="loading">
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+    <p>Loading assessments...</p>
+  </div>
+</div>
+
+<footer>
+  <a class="f-logo" href="/"><span class="logo-i">i</span><span>need</span><span class="logo-recovery">recovery</span><span>.org</span></a>
+  <span class="f-note">Not a crisis service &mdash; In crisis? Call or text 988</span>
+</footer>
+
+<!-- QUIZ MODAL -->
+<div class="quiz-overlay" id="quiz-overlay" onclick="handleOverlayClick(event)">
+  <div class="quiz-modal" id="quiz-modal">
+    <div class="quiz-modal-header">
+      <button class="quiz-modal-close" onclick="closeQuiz()">&#10005;</button>
+      <div class="qm-eyebrow">Self-Assessment</div>
+      <div class="qm-title" id="qm-title"></div>
+      <div class="qm-desc" id="qm-desc"></div>
+    </div>
+    <div class="quiz-modal-body">
+      <div class="qm-progress"><div class="qm-progress-fill" id="qm-progress"></div></div>
+      <div id="qm-question-wrap">
+        <div class="qm-question" id="qm-q"></div>
+        <div class="qm-options" id="qm-opts"></div>
+        <div class="qm-nav">
+          <span class="qm-counter" id="qm-counter"></span>
+          <button class="qm-btn-next" id="qm-next" disabled onclick="qmNext()">Next &rarr;</button>
+        </div>
+      </div>
+      <div class="qm-result" id="qm-result">
+        <div class="qm-result-label">Your result</div>
+        <div class="qm-result-name" id="qm-result-name"></div>
+        <div class="qm-result-desc" id="qm-result-desc"></div>
+        <div class="qm-result-actions">
+          <a href="/" class="qm-result-cta">Explore support options &rarr;</a>
+          <button class="qm-retake" onclick="qmRetake()">Retake this assessment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
+var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
+
+// Session check
+(function() {
+  var token = localStorage.getItem('sb_access_token');
+  if (token) {
+    var btn = document.getElementById('nav-login-btn');
+    if (btn) { btn.textContent = 'Dashboard'; btn.href = '/dashboard.html'; }
+  }
+})();
+
+var CATEGORY_COLORS = {
+  'Recovery Journey': 'var(--purple)',
+  'Sobriety and Maintenance': '#2e86ab',
+  'Family and Relationships': '#c49a3c',
+  'Identity and Growth': '#4a7c59',
+  'Provider Resources': '#d45a2a'
+};
+
+function getCategoryColor(cat) {
+  return CATEGORY_COLORS[cat] || 'var(--purple)';
+}
+
+async function loadQuizzes() {
+  var wrap = document.getElementById('quizzes-wrap');
+  try {
+    var res = await fetch(
+      SUPABASE_URL + '/rest/v1/quizzes?is_published=eq.true&select=id,title,slug,description,category,questions&order=category.asc,created_at.desc',
+      { headers: { apikey: ANON_KEY, Authorization: 'Bearer ' + ANON_KEY } }
+    );
+    var quizzes = await res.json();
+
+    if (!quizzes || !quizzes.length) {
+      wrap.innerHTML = '<div class="empty-state"><p>Assessments coming soon.</p></div>';
+      return;
+    }
+
+    var grouped = {};
+    quizzes.forEach(function(q) {
+      var cat = q.category || 'General';
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(q);
+    });
+
+    var html = '';
+    Object.keys(grouped).forEach(function(cat) {
+      var qs = grouped[cat];
+      var color = getCategoryColor(cat);
+      html += '<div class="category-section">';
+      html += '<div class="category-label">' + cat + ' <span class="category-count">' + qs.length + '</span></div>';
+      html += '<div class="quiz-grid">';
+      qs.forEach(function(q) {
+        var qCount = (q.questions || []).length;
+        html += '<div class="quiz-card" onclick="openQuiz(\'' + q.id + '\')">' +
+          '<div class="qc-top" style="background:' + color + ';"></div>' +
+          '<div class="qc-body">' +
+          '<div class="qc-type" style="color:' + color + ';">Self-Assessment</div>' +
+          '<div class="qc-title">' + q.title + '</div>' +
+          '<div class="qc-desc">' + (q.description || 'A short check-in to help you understand what you are experiencing.') + '</div>' +
+          '<div class="qc-footer">' +
+          '<span class="qc-meta">' + qCount + ' questions &middot; ~2 min</span>' +
+          '<button class="qc-btn" style="background:' + color + ';">Take it &rarr;</button>' +
+          '</div></div></div>';
+      });
+      html += '</div></div>';
+    });
+
+    wrap.innerHTML = html;
+    window._quizzes = quizzes;
+
+  } catch(e) {
+    wrap.innerHTML = '<div class="empty-state"><p>Could not load assessments. Please try again.</p></div>';
+  }
+}
+
+// ---- MODAL QUIZ STATE ----
+var qmQuestions = [], qmCurrent = 0, qmScore = 0, qmSelected = null, qmActiveId = null;
+
+function openQuiz(id) {
+  var quiz = (window._quizzes || []).find(function(q) { return q.id === id; });
+  if (!quiz || !quiz.questions || !quiz.questions.length) return;
+
+  qmActiveId = id;
+  qmQuestions = quiz.questions;
+  qmCurrent = 0;
+  qmScore = 0;
+  qmSelected = null;
+
+  document.getElementById('qm-title').textContent = quiz.title;
+  document.getElementById('qm-desc').textContent = quiz.description || 'A short check-in — takes about 2 minutes.';
+  document.getElementById('qm-question-wrap').style.display = 'block';
+  document.getElementById('qm-result').classList.remove('show');
+
+  qmRender();
+  document.getElementById('quiz-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQuiz() {
+  document.getElementById('quiz-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('quiz-overlay')) closeQuiz();
+}
+
+function qmRender() {
+  var q = qmQuestions[qmCurrent];
+  document.getElementById('qm-q').textContent = q.question;
+  document.getElementById('qm-counter').textContent = (qmCurrent + 1) + ' of ' + qmQuestions.length;
+  document.getElementById('qm-progress').style.width = ((qmCurrent / qmQuestions.length) * 100) + '%';
+  qmSelected = null;
+  document.getElementById('qm-next').disabled = true;
+  document.getElementById('qm-next').innerHTML = qmCurrent === qmQuestions.length - 1 ? 'See results &rarr;' : 'Next &rarr;';
+  document.getElementById('qm-opts').innerHTML = q.answers.map(function(a, i) {
+    return '<button class="qm-opt" onclick="qmSelect(this, ' + q.scores[i] + ')"><span class="qm-opt-dot"></span>' + a + '</button>';
+  }).join('');
+}
+
+function qmSelect(btn, score) {
+  document.querySelectorAll('.qm-opt').forEach(function(b) { b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  qmSelected = score;
+  document.getElementById('qm-next').disabled = false;
+}
+
+function qmNext() {
+  if (qmSelected === null) return;
+  qmScore += qmSelected;
+  qmCurrent++;
+  if (qmCurrent < qmQuestions.length) {
+    qmRender();
+  } else {
+    document.getElementById('qm-progress').style.width = '100%';
+    document.getElementById('qm-question-wrap').style.display = 'none';
+    var result = qmScore <= 5
+      ? { name: 'Low impact', desc: 'This area may not be significantly affecting you right now. Staying aware of how you feel is always worthwhile.' }
+      : qmScore <= 10
+      ? { name: 'Moderate impact', desc: 'You are carrying some real weight in this area. Exploring support — even casually — could make a meaningful difference.' }
+      : { name: 'High impact', desc: 'This is significantly affecting your day-to-day life. You deserve real support. Talking to a counselor or recovery coach could help.' };
+    document.getElementById('qm-result-name').textContent = result.name;
+    document.getElementById('qm-result-desc').textContent = result.desc;
+    document.getElementById('qm-result').classList.add('show');
+  }
+}
+
+function qmRetake() {
+  if (!qmActiveId) return;
+  openQuiz(qmActiveId);
+}
+
+loadQuizzes();
+</script>
+</body>
+</html>

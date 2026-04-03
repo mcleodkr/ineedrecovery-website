@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading... | ineedrecovery.org</title>
+<meta name="description" content="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
+  --warm: #faf8f4; --white: #ffffff; --muted: #8a8a9a; --border: #2e2a3e;
+  --r: 14px; --r-sm: 8px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--warm); color: #1a1a2e; }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 300; display: flex; align-items: center; justify-content: space-between; padding: 14px 52px; background: rgba(26,26,46,0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--warm); text-decoration: none; }
+.logo .logo-i { color: var(--purple); font-style: italic; }
+.logo .logo-recovery { color: var(--purple); font-style: italic; }
+.nav-back { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+.nav-back:hover { color: var(--purple); }
+
+.article-wrap { max-width: 720px; margin: 0 auto; padding: 120px 40px 80px; }
+
+.article-tag { display: inline-block; font-size: 0.63rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--purple); background: var(--purple-lt); padding: 5px 12px; border-radius: 20px; margin-bottom: 24px; }
+
+.article-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; letter-spacing: -0.02em; color: #1a1a2e; margin-bottom: 20px; }
+
+.article-meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 12px; padding-bottom: 24px; border-bottom: 1px solid #e0ddd5; }
+
+/* TOOLBAR */
+.article-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; flex-wrap: wrap; }
+.save-article-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: white; padding: 10px 22px; border-radius: 50px; border: none; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.save-article-btn:hover { background: #8c5aae; }
+.save-article-btn.saved { background: var(--purple-lt); color: var(--purple); pointer-events: none; }
+.share-wrap { position: relative; }
+.share-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--white); color: #1a1a2e; padding: 10px 22px; border-radius: 50px; border: 1.5px solid #e0ddd5; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.share-btn:hover { border-color: var(--purple); color: var(--purple); }
+.share-menu { display: none; position: absolute; top: 44px; left: 0; background: white; border: 1.5px solid #e0ddd5; border-radius: var(--r-sm); box-shadow: 0 8px 24px rgba(0,0,0,0.1); min-width: 220px; z-index: 100; overflow: hidden; }
+.share-menu.open { display: block; }
+.share-menu a, .share-menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 16px; border: none; background: none; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.82rem; font-weight: 600; color: #1a1a2e; cursor: pointer; text-decoration: none; text-align: left; transition: background 0.15s; }
+.share-menu a:hover, .share-menu button:hover { background: var(--purple-lt); }
+
+/* ARTICLE BODY */
+.article-body { font-size: 1rem; line-height: 1.8; color: #1a1a2e; }
+.article-body h1, .article-body h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin: 40px 0 16px; color: #1a1a2e; }
+.article-body h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin: 32px 0 12px; color: #1a1a2e; }
+.article-body p { margin-bottom: 20px; }
+.article-body ul, .article-body ol { margin: 0 0 20px 24px; }
+.article-body li { margin-bottom: 8px; line-height: 1.7; }
+.article-body strong { font-weight: 700; }
+.article-body em { font-style: italic; }
+.article-body blockquote { border-left: 3px solid var(--purple); padding: 16px 20px; margin: 28px 0; background: var(--purple-lt); border-radius: 0 var(--r-sm) var(--r-sm) 0; font-style: italic; color: var(--purple); }
+
+/* QUIZ EMBED */
+.quiz-embed { margin-top: 48px; margin-bottom: 48px; border: 1.5px solid #e0ddd5; border-radius: var(--r); overflow: hidden; }
+.quiz-embed-header { background: var(--deep); padding: 28px 32px; }
+.quiz-embed-eyebrow { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #b08cd4; margin-bottom: 8px; }
+.quiz-embed-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; color: white; line-height: 1.2; }
+.quiz-embed-desc { font-size: 0.82rem; color: rgba(255,255,255,0.65); margin-top: 6px; line-height: 1.6; }
+.quiz-embed-body { background: white; padding: 32px; }
+.qe-progress { height: 3px; background: #e0ddd5; border-radius: 2px; margin-bottom: 28px; overflow: hidden; }
+.qe-progress-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+.qe-question { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic; color: #1a1a2e; margin-bottom: 20px; line-height: 1.4; }
+.qe-options { display: flex; flex-direction: column; gap: 8px; }
+.qe-opt { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 2px solid #e0ddd5; border-radius: var(--r-sm); cursor: pointer; background: white; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; font-weight: 500; color: #1a1a2e; transition: all 0.15s; text-align: left; width: 100%; }
+.qe-opt:hover { border-color: var(--purple); background: var(--purple-lt); }
+.qe-opt.selected { border-color: var(--purple); background: var(--purple-lt); font-weight: 700; }
+.qe-opt-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #e0ddd5; flex-shrink: 0; transition: all 0.15s; background: white; }
+.qe-opt.selected .qe-opt-dot { background: var(--purple); border-color: var(--purple); }
+.qe-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding-top: 18px; border-top: 1px solid #e0ddd5; }
+.qe-counter { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+.qe-btn-next { background: var(--deep); color: white; padding: 10px 24px; border-radius: 50px; border: none; cursor: pointer; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; transition: all 0.2s; }
+.qe-btn-next:hover { background: var(--purple); }
+.qe-btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* QUIZ RESULT */
+.qe-result-card { background: var(--deep); border-radius: var(--r); padding: 36px; margin-top: 4px; position: relative; overflow: hidden; }
+.qe-result-type { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #b08cd4; margin-bottom: 10px; }
+.qe-result-name { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2rem); font-style: italic; color: white; margin-bottom: 16px; line-height: 1.15; }
+.qe-result-desc { font-size: 0.86rem; line-height: 1.75; color: rgba(255,255,255,0.75); margin-bottom: 24px; }
+.qe-prompt-label { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #b08cd4; margin-bottom: 8px; }
+.qe-prompt-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: rgba(255,255,255,0.85); line-height: 1.5; padding: 14px; border-left: 3px solid #b08cd4; background: rgba(255,255,255,0.04); border-radius: 0 var(--r-sm) var(--r-sm) 0; margin-bottom: 18px; }
+.qe-journal { width: 100%; min-height: 110px; padding: 14px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--r-sm); color: rgba(255,255,255,0.85); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; resize: vertical; outline: none; transition: border-color 0.2s; line-height: 1.6; }
+.qe-journal::placeholder { color: rgba(255,255,255,0.25); }
+.qe-journal:focus { border-color: #b08cd4; }
+.qe-retake { margin-top: 16px; }
+.qe-retake button { background: none; border: none; font-size: 0.78rem; color: rgba(255,255,255,0.55); cursor: pointer; font-family: inherit; text-decoration: underline; }
+.qe-retake button:hover { color: rgba(255,255,255,0.7); }
+
+/* LOADING */
+.loading { text-align: center; padding: 80px 40px; }
+.loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
+.loading-dot { width: 8px; height: 8px; background: var(--purple); border-radius: 50%; animation: dotpulse 1.2s ease-in-out infinite; }
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotpulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.error-wrap { text-align: center; padding: 80px 40px; }
+.error-wrap h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 12px; }
+.error-wrap p { color: var(--muted); margin-bottom: 24px; }
+.btn-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: white; padding: 12px 28px; border-radius: 50px; font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.btn-cta:hover { background: #8c5aae; }
+
+footer { background: var(--deep); padding: 28px 52px; display: flex; justify-content: space-between; align-items: center; margin-top: 80px; }
+.f-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: white; text-decoration: none; }
+.f-logo .logo-i { color: var(--purple); font-style: italic; }
+.f-logo .logo-recovery { color: var(--purple); font-style: italic; }
+.f-note { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
+
+@media (max-width: 768px) {
+  nav { padding: 12px 20px; }
+  .article-wrap { padding: 100px 20px 60px; }
+  footer { padding: 20px; flex-direction: column; gap: 10px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/"><span class="logo-i">i</span><span>need</span><span class="logo-recovery">recovery</span><span>.org</span></a>
+  <a class="nav-back" href="/#articles">&larr; Back to Articles</a>
+</nav>
+
+<div class="article-wrap" id="article-wrap">
+  <div class="loading">
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+    <p>Loading article...</p>
+  </div>
+</div>
+
+<footer>
+  <a class="f-logo" href="/"><span class="logo-i">i</span><span>need</span><span class="logo-recovery">recovery</span><span>.org</span></a>
+  <span class="f-note">Not a crisis service &mdash; In crisis? Call or text 988</span>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
+
+function getSlug() {
+  var params = new URLSearchParams(window.location.search);
+  return params.get('slug') || '';
+}
+
+function formatContent(content) {
+  if (!content) return '';
+  if (content.includes('<p>') || content.includes('<h2>')) return content;
+  return content.split('\n\n').map(function(para) {
+    if (para.startsWith('# ')) return '<h1>' + para.slice(2) + '</h1>';
+    if (para.startsWith('## ')) return '<h2>' + para.slice(3) + '</h2>';
+    if (para.startsWith('### ')) return '<h3>' + para.slice(4) + '</h3>';
+    if (para.startsWith('> ')) return '<blockquote>' + para.slice(2) + '</blockquote>';
+    if (para.trim()) return '<p>' + para.replace(/\n/g, '<br>') + '</p>';
+    return '';
+  }).join('');
+}
+
+// ---- QUIZ EMBED ----
+const QE_RESULTS_BY_CATEGORY = {
+  'Recovery Journey': {
+    low: { name: 'Grounded and Moving', desc: 'You are further along than you think. The awareness you carry right now is not common. Keep trusting the process.', prompt: 'What is one thing you have done for your recovery that your past self would be proud of?' },
+    mid: { name: 'The Hesitant One', desc: 'You can see the path forward. But every time you get close to a turn, something pulls you back. That hesitation is not weakness. It is a mind that cares deeply about getting things right.', prompt: 'What would you do right now if you knew you could not fail?' },
+    high: { name: 'Standing at the Edge', desc: 'You know what needs to happen. Getting there feels impossible. That freeze is not failure. It is a nervous system doing what it was trained to do. But part of you knows the cost of staying still is starting to outweigh the risk of moving.', prompt: 'What has staying still been protecting you from — and what has it been costing you?' }
+  },
+  default: {
+    low: { name: 'Grounded and Aware', desc: 'You are in a genuinely valuable space right now — aware enough to check in before things reach a breaking point. Keep paying attention to yourself. It matters.', prompt: 'What does taking care of yourself actually look like for you right now?' },
+    mid: { name: 'The Braced One', desc: 'You are not panicking — you are bracing. There is a low-grade readiness that never fully turns off. That kind of vigilance is exhausting. And it can change.', prompt: 'What would it feel like to stop bracing, just for today?' },
+    high: { name: 'Running on Empty', desc: 'You have been running for so long on so little that even you do not fully notice how depleted you are anymore. You are not broken. You are someone who has been strong for too long without enough support. That is a signal.', prompt: 'If rest were actually allowed — what would you do with it?' }
+  }
+};
+
+let qeCategory = 'default';
+
+function renderQuizEmbed(quiz) {
+  var questions = quiz.questions || [];
+  if (!questions.length) return '';
+  qeCategory = quiz.category || 'default';
+  return '<div style="margin-bottom:12px;"><p style="font-size:0.88rem;color:var(--muted);line-height:1.65;">You just got the quick answer. Now let us make it personal — take this 2-minute check-in to see where you actually are right now.</p></div>' +
+    '<div class="quiz-embed" id="quiz-embed">' +
+    '<div class="quiz-embed-header">' +
+    '<div class="quiz-embed-eyebrow">Self-Assessment</div>' +
+    '<div class="quiz-embed-title">' + quiz.title + '</div>' +
+    '<div class="quiz-embed-desc">' + (quiz.description || 'A quick check-in — takes about 2 minutes.') + '</div>' +
+    '</div>' +
+    '<div class="quiz-embed-body">' +
+    '<div class="qe-progress"><div class="qe-progress-fill" id="qe-progress"></div></div>' +
+    '<div id="qe-question-wrap">' +
+    '<div class="qe-question" id="qe-q"></div>' +
+    '<div class="qe-options" id="qe-opts"></div>' +
+    '<div class="qe-nav"><span class="qe-counter" id="qe-counter"></span><button class="qe-btn-next" id="qe-next" disabled onclick="qeNext()">Next &rarr;</button></div>' +
+    '</div>' +
+    '<div id="qe-result-wrap" style="display:none;"></div>' +
+    '</div></div>';
+}
+
+var qeQuestions = [], qeCurrent = 0, qeScore = 0, qeSelected = null;
+
+function qeInit(questions) {
+  qeQuestions = questions;
+  qeCurrent = 0;
+  qeScore = 0;
+  qeRender();
+}
+
+function qeRender() {
+  var q = qeQuestions[qeCurrent];
+  document.getElementById('qe-q').textContent = q.question;
+  document.getElementById('qe-counter').textContent = (qeCurrent + 1) + ' of ' + qeQuestions.length;
+  document.getElementById('qe-progress').style.width = ((qeCurrent / qeQuestions.length) * 100) + '%';
+  qeSelected = null;
+  var nextBtn = document.getElementById('qe-next');
+  nextBtn.disabled = true;
+  nextBtn.innerHTML = qeCurrent === qeQuestions.length - 1 ? 'See my result &rarr;' : 'Next &rarr;';
+  document.getElementById('qe-opts').innerHTML = q.answers.map(function(a, i) {
+    return '<button class="qe-opt" onclick="qeSelect(this, ' + q.scores[i] + ')"><span class="qe-opt-dot"></span>' + a + '</button>';
+  }).join('');
+}
+
+function qeSelect(btn, score) {
+  document.querySelectorAll('.qe-opt').forEach(function(b) { b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  qeSelected = score;
+  document.getElementById('qe-next').disabled = false;
+}
+
+function qeNext() {
+  if (qeSelected === null) return;
+  qeScore += qeSelected;
+  qeCurrent++;
+  if (qeCurrent < qeQuestions.length) {
+    qeRender();
+  } else {
+    document.getElementById('qe-progress').style.width = '100%';
+    document.getElementById('qe-question-wrap').style.display = 'none';
+    var maxScore = qeQuestions.length * 3;
+    var pct = qeScore / maxScore;
+    var bucket = pct < 0.35 ? 'low' : pct < 0.65 ? 'mid' : 'high';
+
+    var result;
+    if (window._quizResults && window._quizResults.length > 0) {
+      result = window._quizResults.find(function(r) { return r.range === bucket; }) || window._quizResults[0];
+    } else {
+      var categoryResults = QE_RESULTS_BY_CATEGORY[qeCategory] || QE_RESULTS_BY_CATEGORY['default'];
+      result = categoryResults[bucket];
+    }
+
+    document.getElementById('qe-result-wrap').style.display = 'block';
+    document.getElementById('qe-result-wrap').innerHTML =
+      '<div class="qe-result-card">' +
+      '<div class="qe-result-type">Your result</div>' +
+      '<div class="qe-result-name">' + result.name + '</div>' +
+      '<div class="qe-result-desc">' + result.desc + '</div>' +
+      '<div class="qe-prompt-label">A prompt to sit with</div>' +
+      '<div class="qe-prompt-text">' + result.prompt + '</div>' +
+      '<div style="font-size:0.72rem;color:rgba(255,255,255,0.55);margin-bottom:10px;">Your response is private and not saved.</div>' +
+      '<textarea class="qe-journal" placeholder="Write whatever you are carrying. Take your time."></textarea>' +
+      '<div class="qe-retake"><button onclick="qeRetake()">Take this quiz again</button></div>' +
+      '</div>';
+    document.getElementById('qe-result-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function qeRetake() {
+  document.getElementById('qe-result-wrap').style.display = 'none';
+  document.getElementById('qe-question-wrap').style.display = 'block';
+  qeCurrent = 0; qeScore = 0; qeSelected = null;
+  document.getElementById('qe-progress').style.width = '0%';
+  qeRender();
+}
+
+// ---- SHARE ----
+function toggleShareMenu(e) {
+  e.stopPropagation();
+  var menu = document.getElementById('shareMenu');
+  if (menu) menu.classList.toggle('open');
+}
+function copyArticleLink() {
+  navigator.clipboard.writeText(window.location.href).then(function() {
+    var menu = document.getElementById('shareMenu');
+    if (menu) menu.classList.remove('open');
+    alert('Link copied!');
+  });
+}
+document.addEventListener('click', function() {
+  var menu = document.getElementById('shareMenu');
+  if (menu) menu.classList.remove('open');
+});
+
+// ---- AUTH for save ----
+var articleAccessToken = null;
+var articleUserEmail = null;
+
+async function checkArticleAuth() {
+  var saved = localStorage.getItem('sb_access_token');
+  if (!saved) return false;
+  try {
+    var res = await fetch(SUPABASE_URL + '/auth/v1/user', {
+      headers: { 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + saved }
+    });
+    if (!res.ok) return false;
+    var user = await res.json();
+    articleAccessToken = saved;
+    articleUserEmail = user.email;
+    return true;
+  } catch (e) { return false; }
+}
+
+async function saveArticle(slug, title, category) {
+  if (!articleAccessToken || !articleUserEmail) return;
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/saved_articles', {
+      method: 'POST',
+      headers: {
+        'apikey': ANON_KEY,
+        'Authorization': 'Bearer ' + articleAccessToken,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        user_email: articleUserEmail,
+        article_slug: slug,
+        article_title: title,
+        category: category || null,
+        saved_at: new Date().toISOString()
+      })
+    });
+    var btn = document.getElementById('saveArticleBtn');
+    if (btn) {
+      if (res.ok || res.status === 409) {
+        btn.classList.add('saved');
+        btn.textContent = 'Saved';
+      } else {
+        btn.textContent = 'Could not save';
+      }
+    }
+  } catch(e) {
+    var btn2 = document.getElementById('saveArticleBtn');
+    if (btn2) btn2.textContent = 'Could not save';
+  }
+}
+
+// ---- LOAD ARTICLE ----
+async function loadArticle() {
+  var slug = getSlug();
+  var wrap = document.getElementById('article-wrap');
+
+  if (!slug) {
+    wrap.innerHTML = '<div class="error-wrap"><h2>No article specified</h2><p>Please choose an article from the library.</p><a href="/#articles" class="btn-cta">&larr; Back to Articles</a></div>';
+    return;
+  }
+
+  try {
+    var res = await fetch(
+      SUPABASE_URL + '/rest/v1/articles?slug=eq.' + slug + '&select=title,slug,meta_description,quick_answer,if_this_is_you,content,id,audience,key_insights,category&limit=1',
+      { headers: { apikey: ANON_KEY, Authorization: 'Bearer ' + ANON_KEY } }
+    );
+    var data = await res.json();
+
+    if (!data || data.length === 0) {
+      wrap.innerHTML = '<div class="error-wrap"><h2>Article not found</h2><p>This article may have moved or been updated.</p><a href="/#articles" class="btn-cta">&larr; Back to Articles</a></div>';
+      return;
+    }
+
+    var article = data[0];
+    document.title = article.title + ' | ineedrecovery.org';
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', article.meta_description || '');
+
+    var bodyHTML = formatContent(article.content);
+
+    // Fetch linked quiz
+    var quizHTML = '';
+    try {
+      var qdata = [];
+      var qres = await fetch(
+        SUPABASE_URL + '/rest/v1/quizzes?related_article_id=eq.' + article.id + '&select=id,title,slug,description,questions,results,category&limit=1',
+        { headers: { apikey: ANON_KEY, Authorization: 'Bearer ' + ANON_KEY } }
+      );
+      qdata = await qres.json();
+
+      if ((!qdata || qdata.length === 0) && article.content) {
+        var slugMatch = article.content.match(/<!-- QUIZ_SLUG: ([a-z0-9-]+) -->/);
+        if (slugMatch) {
+          var qres2 = await fetch(
+            SUPABASE_URL + '/rest/v1/quizzes?slug=eq.' + slugMatch[1] + '&select=id,title,slug,description,questions,results,category&limit=1',
+            { headers: { apikey: ANON_KEY, Authorization: 'Bearer ' + ANON_KEY } }
+          );
+          qdata = await qres2.json();
+        }
+      }
+
+      if (qdata && qdata.length > 0) {
+        window._fetchedQuiz = qdata[0];
+        quizHTML = renderQuizEmbed(qdata[0]);
+      }
+    } catch(e) {}
+
+    // Build page
+    var html = '';
+
+    // 1. Title and meta
+    html += '<div class="article-tag" id="article-category-tag">' + (article.category || 'Recovery') + '</div>';
+    html += '<h1 class="article-title">' + article.title + '</h1>';
+    html += '<div class="article-meta">ineedrecovery.org &middot; Recovery Resources</div>';
+
+    // 2. Toolbar placeholder (inserted after auth check below)
+    html += '<div id="toolbar-slot"></div>';
+
+    // 3. Quick Answer
+    if (article.quick_answer) {
+      html += '<div style="background:var(--purple-lt);border-left:4px solid var(--purple);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:18px 20px;margin-bottom:28px;">' +
+        '<div style="font-size:0.62rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;">Quick Answer</div>' +
+        '<p style="font-size:0.95rem;line-height:1.7;color:#1a1a2e;font-weight:500;margin:0;">' + article.quick_answer + '</p></div>';
+    }
+
+    // 4. If This Is You
+    if (article.if_this_is_you) {
+      html += '<div style="background:white;border:1.5px solid #e0ddd5;border-radius:var(--r-sm);padding:20px 24px;margin-bottom:28px;">' +
+        '<div style="font-size:0.62rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">If this is you...</div>' +
+        '<div style="display:flex;flex-direction:column;gap:10px;">' +
+        article.if_this_is_you.split('|').map(function(s) {
+          return '<div style="display:flex;align-items:flex-start;gap:10px;"><span style="color:var(--purple);font-weight:800;flex-shrink:0;margin-top:2px;">&#10003;</span><span style="font-size:0.88rem;line-height:1.6;color:#1a1a2e;">' + s.trim() + '</span></div>';
+        }).join('') +
+        '</div></div>';
+    }
+
+    // 5. Key Insights
+    if (article.key_insights && Array.isArray(article.key_insights) && article.key_insights.length > 0) {
+      html += '<div style="background:var(--purple-lt);border:1.5px solid var(--purple);border-left:3px solid #c49a3c;border-radius:var(--r);padding:24px 28px;margin-bottom:28px;">' +
+        '<div style="font-size:0.62rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple);margin-bottom:14px;">Key Insights</div>' +
+        '<ul style="list-style:none;display:flex;flex-direction:column;gap:12px;padding:0;margin:0;">' +
+        article.key_insights.map(function(i) {
+          return '<li style="display:flex;align-items:flex-start;gap:10px;"><span style="color:var(--purple);font-weight:800;flex-shrink:0;margin-top:2px;">&#10022;</span><span style="font-size:0.92rem;line-height:1.6;color:#1a1a2e;font-weight:500;">' + i + '</span></li>';
+        }).join('') +
+        '</ul></div>';
+    }
+
+    // 6. Quiz embed
+    html += quizHTML;
+
+    // 7. Full article content
+    html += '<div style="margin:48px 0 32px;padding-top:40px;border-top:1px solid #e0ddd5;">' +
+      '<div style="font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;">Read more about this</div>' +
+      '<div class="article-body">' + bodyHTML + '</div></div>';
+
+    // 8. Three-door CTA
+    html += '<div style="background:var(--deep);border-radius:var(--r);padding:40px;margin-top:48px;">' +
+      '<div style="font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#b08cd4;margin-bottom:16px;">Where would you like to go next?</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">' +
+      '<a href="https://www.ineedtherapy.org/#directory" style="background:var(--purple);border-radius:var(--r-sm);padding:20px;text-decoration:none;display:block;transition:all 0.2s;" onmouseover="this.style.opacity=\'0.9\'" onmouseout="this.style.opacity=\'1\'">' +
+      '<div style="font-size:1.4rem;margin-bottom:10px;">&#129309;</div>' +
+      '<div style="font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:6px;">Find support</div>' +
+      '<div style="font-size:0.88rem;font-weight:700;color:white;line-height:1.4;">Browse recovery providers</div>' +
+      '<div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:6px;">Coaches, LCDCs, peer specialists</div></a>' +
+      '<a href="https://www.sprixle.com" target="_blank" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r-sm);padding:20px;text-decoration:none;display:block;transition:all 0.2s;" onmouseover="this.style.background=\'rgba(255,255,255,0.1)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.06)\'">' +
+      '<div style="font-size:1.4rem;margin-bottom:10px;">&#128211;</div>' +
+      '<div style="font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;">Go deeper</div>' +
+      '<div style="font-size:0.88rem;font-weight:700;color:white;line-height:1.4;">Continue on Sprixle</div>' +
+      '<div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:6px;">Free journaling &middot; No credit card</div></a>' +
+      '<a href="/#articles" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r-sm);padding:20px;text-decoration:none;display:block;transition:all 0.2s;" onmouseover="this.style.background=\'rgba(255,255,255,0.1)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.06)\'">' +
+      '<div style="font-size:1.4rem;margin-bottom:10px;">&#128218;</div>' +
+      '<div style="font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;">Keep reading</div>' +
+      '<div style="font-size:0.88rem;font-weight:700;color:white;line-height:1.4;">Recovery resources</div>' +
+      '<div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:6px;">More articles and guides</div></a>' +
+      '</div></div>';
+
+    wrap.innerHTML = html;
+
+    // Insert toolbar
+    var toolbarSlot = document.getElementById('toolbar-slot');
+    if (toolbarSlot) {
+      var toolbar = document.createElement('div');
+      toolbar.className = 'article-toolbar';
+
+      var isLoggedIn = await checkArticleAuth();
+      if (isLoggedIn) {
+        var saveBtn = document.createElement('button');
+        saveBtn.id = 'saveArticleBtn';
+        saveBtn.className = 'save-article-btn';
+        saveBtn.textContent = 'Save this article';
+        saveBtn.onclick = function() { saveArticle(article.slug, article.title, article.category || null); };
+        toolbar.appendChild(saveBtn);
+      }
+
+      var shareWrap = document.createElement('div');
+      shareWrap.className = 'share-wrap';
+      shareWrap.innerHTML = '<button class="share-btn" onclick="toggleShareMenu(event)">Share</button>' +
+        '<div class="share-menu" id="shareMenu">' +
+        '<button onclick="copyArticleLink()">Copy link</button>' +
+        '<a href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href) + '" target="_blank" rel="noopener">Share on LinkedIn</a>' +
+        '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(article.title + ' via ineedrecovery.org') + '&url=' + encodeURIComponent(window.location.href) + '" target="_blank" rel="noopener">Share on X</a>' +
+        '</div>';
+      toolbar.appendChild(shareWrap);
+      toolbarSlot.replaceWith(toolbar);
+    }
+
+    // Init quiz if present
+    var embed = document.getElementById('quiz-embed');
+    if (embed && window._fetchedQuiz) {
+      var fq = window._fetchedQuiz;
+      if (fq.questions && fq.questions.length > 0) {
+        qeCategory = fq.category || 'default';
+        window._quizResults = fq.results || [];
+        qeInit(fq.questions);
+      }
+    }
+
+  } catch(e) {
+    wrap.innerHTML = '<div class="error-wrap"><h2>Something went wrong</h2><p>We could not load this article. Please try again.</p><a href="/#articles" class="btn-cta">&larr; Back to Articles</a></div>';
+  }
+}
+
+loadArticle();
+</script>
+</body>
+</html>
