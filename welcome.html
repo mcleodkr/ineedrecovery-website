@@ -214,6 +214,28 @@ window.onTurnstileVerified = function (token) {
     }
 
     try {
+      // Capture UTM params (5-column canonical set: source, campaign,
+      // medium, content, term). Only set fields when present so the row
+      // doesn't store empty strings for organic traffic.
+      var utmParams = new URLSearchParams(window.location.search);
+      var profileData = {
+        email: email,
+        display_name: displayName,
+        role: 'explorer',
+        audience: 'recovery',
+        source: 'ineedrecovery.org'
+      };
+      var utmSource = utmParams.get('utm_source') || '';
+      var utmCampaign = utmParams.get('utm_campaign') || '';
+      var utmMedium = utmParams.get('utm_medium') || '';
+      var utmContent = utmParams.get('utm_content') || '';
+      var utmTerm = utmParams.get('utm_term') || '';
+      if (utmSource) profileData.utm_source = utmSource;
+      if (utmCampaign) profileData.utm_campaign = utmCampaign;
+      if (utmMedium) profileData.utm_medium = utmMedium;
+      if (utmContent) profileData.utm_content = utmContent;
+      if (utmTerm) profileData.utm_term = utmTerm;
+
       // Save profile
       await fetch(SUPABASE_URL + '/rest/v1/explorer_profiles', {
         method: 'POST',
@@ -223,13 +245,7 @@ window.onTurnstileVerified = function (token) {
           'Authorization': 'Bearer ' + ANON_KEY,
           'Prefer': 'return=minimal'
         },
-        body: JSON.stringify({
-          email: email,
-          display_name: displayName,
-          role: 'explorer',
-          audience: 'recovery',
-          source: 'ineedrecovery.org'
-        })
+        body: JSON.stringify(profileData)
       });
 
       // Send magic link
