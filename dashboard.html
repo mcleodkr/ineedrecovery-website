@@ -6,6 +6,7 @@
 <title>Your Dashboard | ineedrecovery.org</title>
 <meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
 :root {
   --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
@@ -124,7 +125,8 @@ footer { background: var(--deep); padding: 48px 80px; text-align: center; }
     <p class="login-sub">Enter your email and we will send you a magic link to access your dashboard.</p>
     <form id="loginForm" onsubmit="return false;">
       <input type="email" class="login-input" id="loginEmail" placeholder="you@email.com" required autocomplete="email">
-      <button type="submit" class="login-btn" id="loginBtn">Send magic link</button>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADDKlWVIhl7kMkdC" data-callback="onTurnstileVerified" style="margin: 8px 0;"></div>
+      <button type="submit" class="login-btn" id="loginBtn" disabled>Send magic link</button>
     </form>
     <p class="login-msg" id="loginMsg"></p>
   </div>
@@ -254,6 +256,15 @@ footer { background: var(--deep); padding: 48px 80px; text-align: center; }
 var SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
 var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
 
+// Cloudflare Turnstile callback. Stash the token and enable the login submit
+// button. Supabase Auth verifies the token server-side via the secret key.
+window.__turnstileToken = null;
+window.onTurnstileVerified = function (token) {
+  window.__turnstileToken = token;
+  var btn = document.getElementById('loginBtn');
+  if (btn) btn.disabled = false;
+};
+
 var currentAccessToken = null;
 var currentUserEmail = null;
 
@@ -312,7 +323,11 @@ async function sendMagicLink(email) {
   var res = await fetch(SUPABASE_URL + '/auth/v1/magiclink', {
     method: 'POST',
     headers: { 'apikey': ANON_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' } })
+    body: JSON.stringify({
+      email: email,
+      options: { emailRedirectTo: window.location.origin + '/dashboard.html' },
+      gotrue_meta_security: { captcha_token: window.__turnstileToken }
+    })
   });
   return res.ok;
 }

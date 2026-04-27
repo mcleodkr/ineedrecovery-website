@@ -6,6 +6,7 @@
 <title>Welcome — ineedrecovery.org</title>
 <meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
 :root {
   --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
@@ -99,7 +100,8 @@ h1 em { color: var(--purple); font-style: italic; }
         <label for="email">Email address</label>
         <input type="email" id="email" name="email" placeholder="you@example.com" required>
       </div>
-      <button type="submit" class="btn-submit" id="submit-btn">Create my space &rarr;</button>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADDKlWVIhl7kMkdC" data-callback="onTurnstileVerified" style="margin: 4px 0;"></div>
+      <button type="submit" class="btn-submit" id="submit-btn" disabled>Create my space &rarr;</button>
     </form>
     <p class="form-hint">We will send a magic link to verify your email.</p>
   </div>
@@ -112,7 +114,8 @@ h1 em { color: var(--purple); font-style: italic; }
         <label for="returning-email">Email address</label>
         <input type="email" id="returning-email" name="email" placeholder="you@example.com" required>
       </div>
-      <button type="submit" class="btn-submit" id="returning-btn">Send my link &rarr;</button>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADDKlWVIhl7kMkdC" data-callback="onTurnstileVerified" style="margin: 4px 0;"></div>
+      <button type="submit" class="btn-submit" id="returning-btn" disabled>Send my link &rarr;</button>
     </form>
     <p class="form-hint" id="returning-hint">We will send a secure link to your inbox.</p>
   </div>
@@ -132,6 +135,18 @@ h1 em { color: var(--purple); font-style: italic; }
 </div>
 
 <script>
+// Cloudflare Turnstile callback. Each form has its own widget; the callback
+// fires per-widget and stashes the most recent token. Single-use server-side,
+// so a stale token from the other form just gets ignored on validation.
+window.__turnstileToken = null;
+window.onTurnstileVerified = function (token) {
+  window.__turnstileToken = token;
+  var sb = document.getElementById('submit-btn');
+  var rb = document.getElementById('returning-btn');
+  if (sb) sb.disabled = false;
+  if (rb) rb.disabled = false;
+};
+
 (function() {
   var SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
   var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
@@ -221,7 +236,7 @@ h1 em { color: var(--purple); font-style: italic; }
       var res = await fetch(SUPABASE_URL + '/auth/v1/magiclink', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + ANON_KEY },
-        body: JSON.stringify({ email: email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' } })
+        body: JSON.stringify({ email: email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' }, gotrue_meta_security: { captcha_token: window.__turnstileToken } })
       });
 
       if (!res.ok) {
@@ -264,7 +279,7 @@ h1 em { color: var(--purple); font-style: italic; }
       var res = await fetch(SUPABASE_URL + '/auth/v1/magiclink', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + ANON_KEY },
-        body: JSON.stringify({ email: email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' } })
+        body: JSON.stringify({ email: email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' }, gotrue_meta_security: { captcha_token: window.__turnstileToken } })
       });
 
       if (!res.ok) {
