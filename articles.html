@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Articles | ineedrecovery.org</title>
+<meta name="description" content="Articles on recovery, sobriety, mental health, and rebuilding life on your own terms.">
+<meta property="og:title" content="Articles | ineedrecovery.org">
+<meta property="og:description" content="Articles on recovery, sobriety, mental health, and rebuilding life on your own terms.">
+<meta property="og:url" content="https://www.ineedrecovery.org/articles.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://www.ineedrecovery.org/articles.html">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #1a1a2e; --purple: #7c4a9e; --purple-lt: #f4f0fa; --lavender: #f4f0fa;
+  --warm: #faf8f4; --white: #ffffff; --muted: #8a8a9a; --border: #2e2a3e;
+  --r: 14px; --r-sm: 8px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--deep); color: var(--warm); overflow-x: hidden; }
+
+/* NAV — matches index.html */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 300; display: flex; align-items: center; justify-content: space-between; padding: 14px 52px; background: rgba(26,26,46,0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--warm); text-decoration: none; }
+.logo .logo-i { color: var(--purple); font-style: italic; }
+.logo .logo-recovery { color: var(--purple); font-style: italic; }
+.nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+.nav-links a { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--purple); }
+.nav-links a.current { color: var(--purple); }
+.nav-pill { background: var(--purple); color: var(--white) !important; padding: 8px 18px; border-radius: 50px; }
+.nav-pill:hover { background: #8c5aae !important; }
+
+/* PAGE HERO */
+.page-hero {
+  padding: 140px 52px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::after {
+  content: 'ARTICLES';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(7rem, 14vw, 15rem);
+  font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.page-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--warm);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 12px;
+}
+.page-hero h1 em { color: var(--purple); font-style: italic; }
+.page-hero p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+}
+
+/* FILTER PILLS — mirrors index.html .filter-pill */
+.filter-pills-wrap { max-width: 1100px; margin: 0 auto; padding: 16px 24px 0; }
+.filter-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.filter-pill {
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 36px;
+}
+.filter-pill:hover { border-color: var(--purple); color: var(--warm); }
+.filter-pill.active { background: var(--purple); border-color: var(--purple); color: var(--white); }
+
+/* GRID */
+.page-content { max-width: 1100px; margin: 0 auto; padding: 28px 24px 80px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.02);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  text-decoration: none;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card:hover {
+  border-color: var(--purple);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(124,74,158,0.12);
+}
+.card-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: rgba(124,74,158,0.08);
+  background-size: cover;
+  background-position: center;
+  border-bottom: 1px solid var(--border);
+}
+.card-body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+.card-cat {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple);
+  background: rgba(124,74,158,0.12);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  width: fit-content;
+}
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--warm);
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.card-link { font-weight: 700; color: var(--purple); }
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  grid-column: 1 / -1;
+}
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  grid-column: 1 / -1;
+}
+
+/* FOOTER — matches index.html */
+footer { background: rgba(26,26,46,0.6); border-top: 1px solid var(--border); padding: 40px 52px; text-align: center; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--warm); margin-bottom: 12px; }
+.footer-logo .logo-i { color: var(--purple); font-style: italic; }
+.footer-logo .logo-recovery { color: var(--purple); font-style: italic; }
+.footer-parent { font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; }
+.footer-parent a { color: var(--purple); text-decoration: none; }
+.footer-parent a:hover { text-decoration: underline; }
+.footer-crisis { font-size: 0.72rem; color: rgba(255,255,255,0.4); font-weight: 700; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 12px 20px; }
+  .nav-links { gap: 14px; }
+  .grid { grid-template-columns: 1fr; }
+  .page-hero { padding: 120px 24px 40px; }
+  .page-content { padding: 24px 18px 60px; }
+  footer { padding: 32px 24px; }
+}
+@media (max-width: 600px) {
+  .nav-links a:not(.nav-pill) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo"><span class="logo-i">i</span><span>need</span><span class="logo-recovery">recovery</span><span>.org</span></a>
+  <ul class="nav-links">
+    <li><a href="https://www.ineedtherapy.org/find-a-match.html">Find Your Person</a></li>
+    <li><a href="/articles.html" class="current">Articles</a></li>
+    <li><a href="/quizzes.html">Quizzes</a></li>
+    <li><a href="/dashboard.html">Dashboard</a></li>
+    <li><a href="/welcome.html" class="nav-pill">Login</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <h1>Articles for the <em>journey forward</em></h1>
+  <p>Practical, honest writing on recovery, sobriety, mental health, and rebuilding life on your own terms.</p>
+</section>
+
+<!-- FILTER PILLS (rendered by JS) -->
+<div class="filter-pills-wrap">
+  <div class="filter-pills" id="filter-pills"></div>
+</div>
+
+<!-- GRID -->
+<main class="page-content">
+  <div class="grid" id="articles-grid">
+    <div class="loading">Loading articles…</div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span class="logo-i">i</span>need<span class="logo-recovery">recovery</span>.org</div>
+  <p class="footer-parent">A sister site of <a href="https://www.ineedtherapy.org">ineedtherapy.org</a></p>
+  <p class="footer-crisis">Not a crisis service. In crisis? Call or text <a href="tel:988" style="color:var(--purple);">988</a>.</p>
+</footer>
+
+<script>
+(function() {
+  var SUPABASE_URL = 'https://qroizygknxdjsstkezsf.supabase.co';
+  var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyb2l6eWdrbnhkanNzdGtlenNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MTQ3MTEsImV4cCI6MjA5MDI5MDcxMX0.ZnSxf8LIDe_HPedgMPTwRpVE_VJmYSSFecwqrlNvjQ4';
+
+  var _articles = [];
+  var _currentCategory = 'all';
+
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '';
+    try {
+      return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch (_) { return ''; }
+  }
+
+  function renderPills() {
+    // Categories sorted by frequency, top categories surface first.
+    var counts = {};
+    _articles.forEach(function(a) {
+      var c = a.category || 'Other';
+      counts[c] = (counts[c] || 0) + 1;
+    });
+    var cats = Object.keys(counts).sort(function(a, b) { return counts[b] - counts[a]; });
+
+    var container = document.getElementById('filter-pills');
+    var html = '<button class="filter-pill ' + (_currentCategory === 'all' ? 'active' : '') + '" data-cat="all">All</button>';
+    html += cats.map(function(cat) {
+      return '<button class="filter-pill ' + (_currentCategory === cat ? 'active' : '') + '" data-cat="' + escapeHtml(cat) + '">' + escapeHtml(cat) + '</button>';
+    }).join('');
+    container.innerHTML = html;
+
+    Array.prototype.forEach.call(container.querySelectorAll('.filter-pill'), function(btn) {
+      btn.addEventListener('click', function() {
+        _currentCategory = btn.getAttribute('data-cat');
+        renderPills();
+        renderGrid();
+      });
+    });
+  }
+
+  function renderGrid() {
+    var grid = document.getElementById('articles-grid');
+    var filtered = _currentCategory === 'all'
+      ? _articles
+      : _articles.filter(function(a) { return (a.category || 'Other') === _currentCategory; });
+
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="empty">No articles found in this category yet.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(function(a) {
+      var thumb = a.image_url
+        ? '<div class="card-thumb" style="background-image:url(' + escapeHtml(a.image_url) + ')"></div>'
+        : '<div class="card-thumb"></div>';
+      var cat = a.category ? '<span class="card-cat">' + escapeHtml(a.category) + '</span>' : '';
+      var date = fmtDate(a.published_at || a.created_at);
+      var desc = a.meta_description ? escapeHtml(a.meta_description) : '';
+      var slug = encodeURIComponent(a.slug || '');
+      return '<a href="/article.html?slug=' + slug + '" class="card">'
+        + thumb
+        + '<div class="card-body">'
+        + cat
+        + '<h3 class="card-title">' + escapeHtml(a.title || 'Untitled') + '</h3>'
+        + '<p class="card-desc">' + desc + '</p>'
+        + '<div class="card-meta">'
+        + '<span>' + escapeHtml(date) + '</span>'
+        + '<span class="card-link">Read &rarr;</span>'
+        + '</div>'
+        + '</div>'
+        + '</a>';
+    }).join('');
+  }
+
+  async function load() {
+    try {
+      // Recovery-audience published articles. published_at can be null on
+      // older rows, so order by published_at NULLS LAST then created_at as
+      // tiebreak so nothing falls off the end of the list.
+      var url = SUPABASE_URL + '/rest/v1/articles'
+        + '?audience=eq.recovery'
+        + '&is_published=eq.true'
+        + '&select=id,title,slug,meta_description,category,image_url,published_at,created_at'
+        + '&order=published_at.desc.nullslast,created_at.desc'
+        + '&limit=500';
+      var res = await fetch(url, {
+        headers: { apikey: ANON_KEY, Authorization: 'Bearer ' + ANON_KEY }
+      });
+      if (!res.ok) throw new Error('Failed to load articles (' + res.status + ')');
+      _articles = await res.json();
+      if (!Array.isArray(_articles)) _articles = [];
+      renderPills();
+      renderGrid();
+    } catch (e) {
+      var grid = document.getElementById('articles-grid');
+      grid.innerHTML = '<div class="empty">Unable to load articles right now. Please try again in a moment.</div>';
+      // eslint-disable-next-line no-console
+      console.error('[articles]', e);
+    }
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
